@@ -1,0 +1,99 @@
+body {
+  margin-top: 20px;
+}
+
+.no-margin-bottom {
+  margin-bottom: 0;
+}
+
+.no-margin-top {
+	margin-top: 0;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.align-left {
+	text-align: left;
+	font-size: 12.5px;
+}
+
+.main-container {
+	border: 1px solid #ddd;
+	border-top: 0;
+	margin-top: -20px;
+	padding: 20px;
+	min-height: 400px;
+	box-shadow: 1px 1px 3px #777;
+}
+
+.chat-space {
+	margin-left: -12px;
+}
+
+.chat-space textarea {
+	width: 100%;
+}
+
+.personal-info {
+	text-align: left;
+	font-size: 10.5px;
+	color: #555555;
+}
+
+.full {
+	width: 100%;
+}
+
+.first-half, .second-half {
+	width: 48.5%;
+}
+.first-half {
+	float: left;
+}
+.second-half {
+	float: right;
+}
+
+.float-left {
+	float: left;
+}
+
+.float-right {
+	float: right;
+}
+
+.nav-tabs > .float-right {
+	float: right;
+}
+
+input.low-input {
+	height: 12px;
+	line-height: normal;
+	font-size: 10.5px;
+}
+
+@media (max-width: 767px) {
+	input.low-input {
+		min-height: 22px;
+		height: 22px;
+		line-height: normal;
+		font-size: 10.5px;
+	}
+}
+
+.half-margin-top {
+	padding-top: 7.5px;
+}
+
+.top-right {
+	position: absolute;
+	top: 3px;
+	right: 2px;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { }
+::-webkit-scrollbar-thumb { background: rgba(2,168,236,.2); border-radius: 2px; }
+::-webkit-scrollbar-button { background: none; height: 2px; }

@@ -1,0 +1,10 @@
+#= require lib/jquery
+#= require lib/bootstrap
+#= require lib/diff_match_patch
+#= require js_extensions
+#= require jquery_extensions
+#= require diff_coder
+#= require sn_storage
+#= require nav_controller
+#= require chat_controller
+#= require main

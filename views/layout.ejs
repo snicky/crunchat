@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <%- css('lib/bootstrap') %>
+    <%- css('lib/font-awesome') %>
+    <%- css('app') %>
+  </head>
+
+  <body>
+  	<%- body %>
+  
+	<script src="/socket.io/socket.io.js"></script>
+	<%- js('app') %>
+  </body>
+</html>

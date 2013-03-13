@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="row">
+    <div class="span12 align-center">
+
+      <ul id="nav-space" class="nav nav-tabs">
+        <li class="nav-tab active" data-special="lobby">
+          <a href="#"><i class="icon-plus"></i></a>
+        </li>
+        <li class="float-right">
+          <div class="input-append half-margin-top no-margin-bottom">
+            <input class="low-input span2" id="nickname" type="text">
+            <button id="nickname-change-btn" class="btn btn-mini" type="button">
+              <i class="icon-user"></i> Change
+            </button>
+          </div>
+        </li>
+      </ul>
+
+          <div class="main-container" style="position: relative">
+
+            <div class="row-fluid">
+              <div class="span10 offset1">
+                <div id="main-space">
+                  <div id="lobby" class="special-space">
+                    <div class="input-append no-margin-bottom">
+                      <input id="room-name" class="input-large" type="text" placeholder="Choose a room name">
+                      <button id="join-button" class="btn btn-primary">
+                        <i class="icon-signin"></i> Join
+                      </button>
+                    </div>
+                    <% if (false) { %>
+                      <button id="random-button" class="btn btn-success">
+                        <i class="icon-random"></i> Random
+                      </button>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+
+          </div>
+   
+    </div>
+  </div>
+</div>
+
+<script type="text/html" id="chat-space-template">
+  <div class="chat-space">
+    <button class="btn btn-mini btn-danger btn-close top-right" type="button">
+      <i class="icon-remove"></i>
+    </button>
+    <div class="clearfix"></div>
+  </div>
+</script>
+
+<script type="text/html" id="chat-box-template">
+  <div class="chat-box">
+    <div class="personal-info"></div>
+    <textarea rows="10"></textarea>
+  </div>
+</script>
+
+<script type="text/html" id="nav-tab-template">
+  <li class="nav-tab"><a href="#"></a></li>
+</script>

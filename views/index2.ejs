@@ -1,0 +1,90 @@
+<html><head>
+    <title>Chatroom: abc</title>
+    <link rel="stylesheet" href="/css/lib/bootstrap.css">
+    <link rel="stylesheet" href="/css/lib/font-awesome.css">
+    <link rel="stylesheet" href="/css/app.css">
+  <style type="text/css"></style></head>
+
+  <body>
+    <div class="container">
+  <div class="row">
+    <div class="span12 align-center">
+
+      <ul id="nav-space" class="nav nav-tabs">
+        <li class="nav-tab" data-special="lobby">
+          <a href="#"><i class="icon-plus"></i></a>
+        </li>
+        <li class="float-right">
+          <div class="input-append half-margin-top no-margin-bottom">
+            <input class="low-input span2" id="nickname" type="text">
+            <button id="nickname-change-btn" class="btn btn-mini" type="button">
+              Change
+            </button>
+          </div>
+        </li>
+      <li class="nav-tab active" data-room-name="abc"><a href="#">abc</a></li></ul>
+
+          <div class="main-container">
+
+            <div class="row-fluid">
+              <div class="span10 offset1">
+                <div id="main-space">
+                  <div id="lobby" class="special-space" style="display: none;">
+                    <div class="input-append no-margin-bottom">
+                      <input id="room-name" class="input-large" type="text" placeholder="Choose a room name">
+                      <button id="join-button" class="btn btn-primary">
+                        <i class="icon-signin"></i> Join
+                      </button>
+                    </div>
+                    
+                  </div>
+                <div class="chat-space" data-room-name="abc">
+                  <div class="full chat-box">
+                    <div class="align-left">Bolki</div>
+                    <textarea class="my" style="width: 100%" rows="10"></textarea>
+                  </div>
+                  <div class="first-half chat-box">
+                    <div class="align-left">Bolki</div>
+                    <textarea rows="10" data-client-id="scnI_" disabled="disabled"></textarea>
+                  </div>
+                  <div class="second-half chat-box">
+                    <div class="align-left">Bolki</div>
+                    <textarea rows="10" data-client-id="fGxR7" disabled="disabled"></textarea>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+   
+    </div>
+  </div>
+</div>
+
+<script type="text/html" id="chat-space-template">
+  <div class="chat-space"><div class="clearfix"></div></div>
+</script>
+
+<script type="text/html" id="chat-box-template">
+  <textarea class="chat-box" rows=10></textarea>
+</script>
+
+<script type="text/html" id="nav-tab-template">
+  <li class="nav-tab"><a href="#"></a></li>
+</script>
+  
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/lib/jquery.js"></script>
+<script src="/js/lib/bootstrap.js"></script>
+<script src="/js/lib/diff_match_patch.js"></script>
+<script src="/js/js_extensions.js"></script>
+<script src="/js/jquery_extensions.js"></script>
+<script src="/js/diff_coder.js"></script>
+<script src="/js/sn_storage.js"></script>
+<script src="/js/nav_controller.js"></script>
+<script src="/js/chat_controller.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/app.js"></script>
+  
+</div></body></html>

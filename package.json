@@ -1,0 +1,26 @@
+{
+  "name": "smiglidigli",
+  "version": "0.0.1-23",
+  "private": true,
+  "scripts": {
+    "start": "coffee app.coffee"
+  },
+  "dependencies": {
+    "express"          : "*",
+    "express-partials" : "*",
+    "ejs"              : "*",
+    "socket.io"        : "*",
+    "connect-assets"   : "*",
+    "nib"              : "*",
+    "stylus"           : "*",
+    "coffee-script"    : "*",
+    "stylus"           : "*",
+    "nib"              : "*",
+    "bootstrap-stylus" : "*",
+    "underscore"       : "*"
+  },
+  "subdomain": "chatchatchat",
+  "engines": {
+    "node": "0.8.x"
+  }
+}
