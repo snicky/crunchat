@@ -95,7 +95,7 @@ class @ChatController
     ta = $("div[#{@roomNameAttr}=#{@roomName}] .#{@chatBoxClass}[#{@clientIdAttr}=#{data.clientId}] textarea")
     newText = @diffCoder.decode(ta.text(), data.diff)
     ta.text(newText)
-    ta.scrollToCaret(data.caretPos)
+    ta.scrollToCaret(data.caretPos) unless ta.is(":focus")
 
   # distribute other client's nickname!
   distributeNickname: (data) ->
