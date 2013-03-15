@@ -7,7 +7,9 @@ class @RoomController
     @roomNameAttr           = "data-room-name"
     @roomIdPrefix           = "room-"
     @chatBoxIdPrefix        = "chat-box-"
-    @myBoxClass             = "my"
+    @textareaIdPrefix       = "textarea-"
+    @myBoxIdPrefix          = "my-"
+    @myTextareaIdPrefix     = "my-textarea-"
     @fullBoxClass           = "full"
     @halfBoxClass           = "half"
     @firstHalfBoxClass      = "first-half"
@@ -19,11 +21,23 @@ class @RoomController
     @permStorage            = new SNStorage("perm")
     @storagePrefix          = "text:"
 
-  for: (roomName) ->
+  find: (roomName) ->
     @roomName   = roomName
-    @roomId     = @roomIdPrefix  + @roomName
-    @storageKey = @storagePrefix + @roomName
+    @roomId     = @roomIdPrefix     + @roomName
+    @storageKey = @storagePrefix    + @roomName
     @
+
+  getChatBoxId: (clientId) ->
+    @chatBoxIdPrefix  + @roomName + "-" + clientId
+
+  getTextareaId: (clientId) ->
+    @textareaIdPrefix + @roomName + "-" + clientId
+
+  getMyBoxId: ->
+    @myBoxIdPrefix + @roomName
+
+  getMyTextareaId: ->
+    @myTextareaIdPrefix + @roomName
     
   addRoomSpace: ->
     template = $($("##{@roomSpaceTemplate}").html().trim()).clone()
@@ -34,32 +48,36 @@ class @RoomController
     @rooms.push(@roomName)
     @addRoomSpace()
     myBox = @addMyBox()
-    @storage.setItem(@storageKey, myBox.val())
-    myBox.on "keyup", =>
-      currentText = myBox.find("textarea").val()
+    myTextarea = $("#"+@getMyTextareaId())
+    @storage.setItem(@storageKey, myTextarea.val())
+    myTextarea.on "keyup", =>
+      currentText = myTextarea.val()
       storedText  = @storage.getItem(@storageKey)
       unless currentText is storedText
         diff = @diffCoder.encode(storedText, currentText)
         @storage.setItem(@storageKey, currentText)
-        caretPos = myBox[0].selectionStart
+        caretPos = myTextarea[0].selectionStart
         callback(diff, caretPos)
 
   addMyBox: ->
     template = $($("##{@chatBoxTemplateId}").html().trim()).clone()
-    personalInfo = template.find(".personal-info")
+    template.addClass(@fullBoxClass).attr("id",@getMyBoxId())
+    template.find("textarea:first").attr("id",@getMyTextareaId())
+    personalInfo = template.find(".personal-info:first")
     personalInfo.text(@permStorage.getItem("nickname") + ":")
-    template.addClass(@myBoxClass).addClass(@fullBoxClass)
-    $("##{@roomId} .clearfix").before(template)
+    $("##{@roomId} .clearfix:first").before(template)
     @scaleBoxes()
     return template
 
   addBox: (data) ->
     template = $($("##{@chatBoxTemplateId}").html().trim()).clone()
-    template.attr("id", @chatBoxIdPrefix + data.clientId)
-    personalInfo = template.find(".personal-info")
+    template.attr("id", @getChatBoxId(data.clientId))
+    personalInfo = template.find(".personal-info:first")
     personalInfo.text("#{data.nickname}:")
-    template.find("textarea").attr("disabled",1)
-    $("##{@roomId} .clearfix").before(template)
+    template.find("textarea:first").attr
+      id       : @getTextareaId(data.clientId)
+      disabled : 1
+    $("##{@roomId} .clearfix:first").before(template)
     @scaleBoxes()
     return template
 
@@ -82,7 +100,7 @@ class @RoomController
       boxes.eq(1).add(boxes.eq(3)).addClass(@secondHalfBoxClass)
 
   removeBox: (clientId) ->
-    $("##{@roomId} ##{@chatBoxIdPrefix}#{clientId}").remove()
+    $("#"+@getChatBoxId(clientId)).remove()
     @scaleBoxes()
 
   removeRoomSpace: ->
@@ -94,12 +112,12 @@ class @RoomController
     @rooms.splice(roomIndex, 1)
     
   distributeText: (data) ->
-    ta = $("##{@roomId} ##{@chatBoxIdPrefix}#{data.clientId} textarea")
+    ta = $("#"+@getTextareaId(data.clientId))
     newText = @diffCoder.decode(ta.text(), data.diff)
     ta.text(newText)
     ta.scrollToCaret(data.caretPos) unless ta.is(":focus")
 
   # distribute other client's nickname!
   distributeNickname: (data) ->
-    chatBox = $("##{@chatBoxIdPrefix}#{data.clientId}")
-    chatBox.find(".personal-info").text("#{data.nickname}:")
+    chatBox = $("#"+@getChatBoxId(data.clientId))
+    chatBox.find(".personal-info:first").text("#{data.nickname}:")

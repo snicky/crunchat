@@ -42,7 +42,6 @@ class @NavController
     $(".#{@navTabClass}").last().addClass("active")
 
   removeTab: (roomName) ->
-    console.log(roomName)
     $(".#{@navTabClass}[#{@roomNameAttr}=#{roomName}]").remove()
 
   showChatSpace: (tab) ->
@@ -86,7 +85,7 @@ class @NavController
     if changing
       nickname = @randomNickname() unless nickname
       @permStorage.setItem("nickname", nickname)
-      $(".my").find(".personal-info").text("#{nickname}:")
+      $("[id^=my]").find(".personal-info:first").text("#{nickname}:")
     changing
 
   joinRoom: (roomName) ->
@@ -123,7 +122,7 @@ class @NavController
       roomName = $(event.target).parents(".chat-space").attr("data-room-name")
       @socket.emit "leaveRoom",
         roomName : roomName
-      @roomController.for(roomName).leaveRoom()
+      @roomController.find(roomName).leaveRoom()
       @removeTab(roomName)
       @showLastChatSpace()
       @activateLastTab()
