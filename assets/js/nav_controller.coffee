@@ -5,7 +5,7 @@ class @NavController
     @roomController         = roomController
     @selfId                 = "nav-space"
     @navTabClass            = "nav-tab"
-    @navTabTemplateId       = "nav-tab-template"
+    @navTabTemplateKey      = "navTab"
     @chatSpaceClass         = "chat-space"
     @specialSpaceClass      = "special-space"
     @roomNameAttr           = "data-room-name"
@@ -25,7 +25,7 @@ class @NavController
     history.pushState(null, null, "_#{roomName}")
 
   addTab: (roomName) ->
-    template = $($("##{@navTabTemplateId}").html().trim()).clone()
+    template = $(Templates[@navTabTemplateKey])
     template.attr(@roomNameAttr,roomName)
     template.find("a").text(roomName)
     $("##{@selfId}").append(template)

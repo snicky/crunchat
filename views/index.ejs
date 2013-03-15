@@ -43,22 +43,10 @@
   </div>
 </div>
 
-<script type="text/html" id="room-space-template">
-  <div class="chat-space">
-    <button class="btn btn-mini btn-danger btn-close top-right" type="button">
-      <i class="icon-remove"></i>
-    </button>
-    <div class="clearfix"></div>
-  </div>
-</script>
-
-<script type="text/html" id="chat-box-template">
-  <div class="chat-box">
-    <div class="personal-info"></div>
-    <textarea rows="10"></textarea>
-  </div>
-</script>
-
-<script type="text/html" id="nav-tab-template">
-  <li class="nav-tab"><a href="#"></a></li>
+<script>
+  var Templates = {
+    roomSpace : '<div class="chat-space"><button class="btn btn-mini btn-danger btn-close top-right" type="button"><i class="icon-remove"></i></button><div class="clearfix"></div></div>',
+    chatBox   : '<div class="chat-box"><div class="personal-info"></div><textarea rows="10"></textarea></div>',
+    navTab    : '<li class="nav-tab"><a href="#"></a></li>'
+  }
 </script>

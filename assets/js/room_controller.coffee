@@ -3,7 +3,6 @@ class @RoomController
   constructor: ->
     @rooms                  = []
     @mainSpaceId            = "main-space"
-    @roomSpaceTemplate      = "room-space-template"
     @roomNameAttr           = "data-room-name"
     @roomIdPrefix           = "room-"
     @chatBoxIdPrefix        = "chat-box-"
@@ -15,7 +14,8 @@ class @RoomController
     @firstHalfBoxClass      = "first-half"
     @secondHalfBoxClass     = "second-half"
     @chatBoxClass           = "chat-box"
-    @chatBoxTemplateId      = "chat-box-template"
+    @roomSpaceTemplateKey   = "roomSpace"
+    @chatBoxTemplateKey     = "chatBox"
     @diffCoder              = new DiffCoder()
     @storage                = new SNStorage()
     @permStorage            = new SNStorage("perm")
@@ -40,7 +40,7 @@ class @RoomController
     @myTextareaIdPrefix + @roomName
     
   addRoomSpace: ->
-    template = $($("##{@roomSpaceTemplate}").html().trim()).clone()
+    template = $(Templates[@roomSpaceTemplateKey])
     template.attr("id",@roomId)
     $("##{@mainSpaceId}").append(template)
 
@@ -60,7 +60,7 @@ class @RoomController
         callback(diff, caretPos)
 
   addMyBox: ->
-    template = $($("##{@chatBoxTemplateId}").html().trim()).clone()
+    template = $(Templates[@chatBoxTemplateKey])
     template.addClass(@fullBoxClass).attr("id",@getMyBoxId())
     template.find("textarea:first").attr("id",@getMyTextareaId())
     personalInfo = template.find(".personal-info:first")
@@ -70,7 +70,7 @@ class @RoomController
     return template
 
   addBox: (data) ->
-    template = $($("##{@chatBoxTemplateId}").html().trim()).clone()
+    template = $(Templates[@chatBoxTemplateKey])
     template.attr("id", @getChatBoxId(data.clientId))
     personalInfo = template.find(".personal-info:first")
     personalInfo.text("#{data.nickname}:")
