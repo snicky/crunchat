@@ -6,5 +6,5 @@
 #= require diff_coder
 #= require sn_storage
 #= require nav_controller
-#= require chat_controller
+#= require room_controller
 #= require main

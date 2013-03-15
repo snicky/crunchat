@@ -1,7 +1,7 @@
 socket = io.connect("http://web1.tunnlr.com:11630")
 
-chatController = new ChatController()
-navController  = new NavController(socket, chatController)
+roomController = new RoomController()
+navController  = new NavController(socket, roomController)
 
 loadSocketCallbacks = ->
 
@@ -16,26 +16,26 @@ loadSocketCallbacks = ->
 
     navController.addTab(roomName)
 
-    chatController.for(roomName).activate (diff, caretPos) ->
+    roomController.for(roomName).activate (diff, caretPos) ->
       socket.emit "textUpdate",
         roomName : roomName
         diff     : diff
         caretPos : caretPos
 
     for data in data.clients
-      chatController.for(roomName).addBox(data)
+      roomController.for(roomName).addBox(data)
 
   socket.on "distributeTextUpdate", (data) ->
-    chatController.for(data.roomName).distributeText(data)
+    roomController.for(data.roomName).distributeText(data)
 
   socket.on "announceNewClient", (data) ->
-    chatController.for(data.roomName).addBox(data)
+    roomController.for(data.roomName).addBox(data)
 
   socket.on "announceClientRemoval", (data) ->
-    chatController.for(data.roomName).removeBox(data.clientId)
+    roomController.for(data.roomName).removeBox(data.clientId)
 
   socket.on "announceNicknameChange", (data) ->
-    chatController.distributeNickname(data)
+    roomController.distributeNickname(data)
 
   socket.on "refuseJoiningRoom", (data) ->
     msg = "Couldnt join room ##{data.roomName}. Reason: "

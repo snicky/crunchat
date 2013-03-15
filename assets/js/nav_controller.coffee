@@ -1,8 +1,8 @@
 class @NavController
 
-  constructor: (socket, chatController) ->
+  constructor: (socket, roomController) ->
     @socket                 = socket
-    @chatController         = chatController
+    @roomController         = roomController
     @selfId                 = "nav-space"
     @navTabClass            = "nav-tab"
     @navTabTemplateId       = "nav-tab-template"
@@ -90,7 +90,7 @@ class @NavController
     changing
 
   joinRoom: (roomName) ->
-    if roomName.length < @maxStringLength && @chatController.rooms.indexOf(roomName) == -1
+    if roomName.length < @maxStringLength && @roomController.rooms.indexOf(roomName) == -1
       @socket.emit "joinRoom", 
         roomName : roomName
 
@@ -123,7 +123,7 @@ class @NavController
       roomName = $(event.target).parents(".chat-space").attr("data-room-name")
       @socket.emit "leaveRoom",
         roomName : roomName
-      @chatController.for(roomName).leaveRoom()
+      @roomController.for(roomName).leaveRoom()
       @removeTab(roomName)
       @showLastChatSpace()
       @activateLastTab()

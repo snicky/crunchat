@@ -1,4 +1,4 @@
-class @ChatController
+class @RoomController
 
   constructor: ->
     @rooms                  = []
