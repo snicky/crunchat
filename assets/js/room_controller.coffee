@@ -3,7 +3,7 @@ class @RoomController
   constructor: ->
     @rooms                  = []
     @mainSpaceId            = "main-space"
-    @chatSpaceTemplate      = "chat-space-template"
+    @roomSpaceTemplate      = "room-space-template"
     @roomNameAttr           = "data-room-name"
     @myBoxClass             = "my"
     @fullBoxClass           = "full"
@@ -24,7 +24,7 @@ class @RoomController
     @
     
   addChatSpace: ->
-    template = $($("##{@chatSpaceTemplate}").html().trim()).clone()
+    template = $($("##{@roomSpaceTemplate}").html().trim()).clone()
     template.attr(@roomNameAttr,@roomName)
     $("##{@mainSpaceId}").append(template)
 
