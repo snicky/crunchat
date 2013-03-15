@@ -59,18 +59,24 @@ io.sockets.on "connection", (socket) ->
       # room names from manager.roomClients contain "/" slash as the first char
       k.substring(1) if k
 
+  socket.getPeersIds = ->
+    peers = []
+    for roomName in socket.getRooms()
+      for client in io.sockets.clients(roomName)
+        peers.push(client.id) if client.id != socket.id && peers.indexOf(client.id) == -1
+    peers
+
   socket.on "updateNickname", (data) ->
     socket.nickname = data.nickname
 
-    for roomName in socket.getRooms()
-      socket.broadcast.to(roomName).emit "announceNicknameChange",
+    for socketId in socket.getPeersIds()
+      io.sockets.sockets[socketId].emit "announceNicknameChange",
         clientId : socket.clientId
         nickname : socket.nickname
 
   socket.on "joinRoom", (data) ->
     roomName = data.roomName if data
     roomName = String.random(settings.idLength) unless roomName
-    console.log(io.sockets.clients(roomName))
     clients  = for client in io.sockets.clients(roomName)
       { clientId : ext.parseClientId(client) , nickname : client.nickname }
     if clients.length < settings.clientsPerRoom
@@ -86,6 +92,32 @@ io.sockets.on "connection", (socket) ->
       socket.emit "refuseJoiningRoom",
         reason   : "full"
         roomName : roomName
+
+  socket.on "joinRandomRoom", (data) ->
+    rooms = []
+    for k,v of io.sockets.manager.rooms
+      if k
+        console.log(socket.id)
+        console.log(v)
+        console.log(v.indexOf(socket.id))
+        console.log(!(v.length >= settings.clientsPerRoom) and v.indexOf(socket.id) == -1)
+        if !(v.length >= settings.clientsPerRoom) and v.indexOf(socket.id) == -1
+          rooms.push(k.substring(1))
+    console.log(rooms)
+    randomRoomName = rooms[Math.floor(Math.random() * rooms.length)]
+    if randomRoomName
+      clients = for client in io.sockets.clients(randomRoomName)
+        { clientId : ext.parseClientId(client) , nickname : client.nickname }
+      socket.join(randomRoomName)
+      socket.emit "confirmJoiningRoom",
+        roomName : randomRoomName
+        clients  : clients
+      socket.broadcast.to(randomRoomName).emit "announceNewClient",
+        roomName : randomRoomName
+        clientId : socket.clientId
+        nickname : socket.nickname
+    else
+      # do sth
 
   socket.on "leaveRoom", (data) ->
     socket.leave(data.roomName)

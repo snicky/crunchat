@@ -3,8 +3,9 @@ class @NavController
   constructor: (socket, roomController) ->
     @socket                 = socket
     @roomController         = roomController
-    @selfId                 = "nav-space"
+    @navSpaceId             = "nav-space"
     @navTabClass            = "nav-tab"
+    @navTabIdPrefix         = "nav-tab-"
     @navTabTemplateKey      = "navTab"
     @chatSpaceClass         = "chat-space"
     @specialSpaceClass      = "special-space"
@@ -12,23 +13,29 @@ class @NavController
     @specialAttr            = "data-special"
     @roomNameId             = "room-name"
     @joinButtonId           = "join-button"
+    @randomButtonId         = "random-button"
     @closeButtonClass       = "btn-close"
+    @addRoomIconId          = "add-room-icon"
     @nicknameChangeButtonId = "nickname-change-btn"
     @permStorage            = new SNStorage("perm")
-    @anonymousIdRange       =  [10000, 99999]
+    @anonymousIdRange       = [10000, 99999]
     @nicknameInputId        = "nickname"
     @maxStringLength        = 32
     @assignNickname()
     @initEvents()
+
+  getNavTabId: (roomName) ->
+    @navTabIdPrefix + roomName
 
   historyPushRoomName: (roomName) ->
     history.pushState(null, null, "_#{roomName}")
 
   addTab: (roomName) ->
     template = $(Templates[@navTabTemplateKey])
+    template.attr("id",@getNavTabId(roomName))
     template.attr(@roomNameAttr,roomName)
     template.find("a").text(roomName)
-    $("##{@selfId}").append(template)
+    $("##{@navSpaceId}").append(template)
     @activateTab(template)
 
   activateTab: (tab) ->
@@ -39,10 +46,11 @@ class @NavController
     @showChatSpace(tab)
 
   activateLastTab: ->
-    $(".#{@navTabClass}").last().addClass("active")
+    $(".#{@navTabClass}:last").addClass("active")
 
   removeTab: (roomName) ->
-    $(".#{@navTabClass}[#{@roomNameAttr}=#{roomName}]").remove()
+    console.log("##{@getNavTabId(roomName)}")
+    $("##{@getNavTabId(roomName)}").remove()
 
   showChatSpace: (tab) ->
     $tab = $(tab)
@@ -50,17 +58,18 @@ class @NavController
     special  = $tab.attr(@specialAttr) unless roomName
     $(".#{@chatSpaceClass}").hide()
     $(".#{@specialSpaceClass}").hide()
+    console.log(roomName)
     if roomName
-      $(".#{@chatSpaceClass}[#{@roomNameAttr}=#{roomName}]").show()
+      $("#room-#{roomName}").show()
     else if special
       $("##{special}").show()
     else
       # raise an error
 
   showLastChatSpace: ->
-    chatSpaces = $(".chat-space")
-    if chatSpaces.length > 0
-      chatSpaces.last().show()
+    last = $(".chat-space:last")
+    if last.length > 0
+      last.show()
     else
       $("#lobby").show()
 
@@ -94,19 +103,21 @@ class @NavController
         roomName : roomName
 
   initEvents: ->
+    nc = @
+
     roomNameMatch = window.location.pathname.match(/_\w+/)
     if roomNameMatch
       roomName = roomNameMatch[0].substring(1)
       @joinRoom(roomName)
-    
-    $(".icon-plus").click ->
+
+    $("##{@addRoomIconId}").click ->
       $(this).parent().click()
       return false
 
-    $("##{@selfId}").on "click", "a", (event) =>
-      target = $(event.target).parent()
+    $("##{@navSpaceId}").on "click", ".nav-tab", ->
+      target = $(this)
       if !target.hasClass("active")
-        @activateTab(target)
+        nc.activateTab(target)
       return false
 
     $("##{@nicknameChangeButtonId}").click =>
@@ -118,11 +129,15 @@ class @NavController
       roomName = $("##{@roomNameId}").val()
       @joinRoom(roomName)
 
-    $("#main-space").on "click", ".#{@closeButtonClass}", (event) =>
-      roomName = $(event.target).parents(".chat-space").attr("data-room-name")
-      @socket.emit "leaveRoom",
+    $("##{@randomButtonId}").click =>
+      console.log('random button click')
+      @socket.emit "joinRandomRoom"
+
+    $("#main-space").on "click", ".#{@closeButtonClass}", ->
+      roomName = $(this).attr("data-room-name")
+      nc.socket.emit "leaveRoom",
         roomName : roomName
-      @roomController.find(roomName).leaveRoom()
-      @removeTab(roomName)
-      @showLastChatSpace()
-      @activateLastTab()
+      nc.roomController.find(roomName).leaveRoom()
+      nc.removeTab(roomName)
+      nc.showLastChatSpace()
+      nc.activateLastTab()

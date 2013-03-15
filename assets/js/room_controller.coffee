@@ -23,8 +23,8 @@ class @RoomController
 
   find: (roomName) ->
     @roomName   = roomName
-    @roomId     = @roomIdPrefix     + @roomName
-    @storageKey = @storagePrefix    + @roomName
+    @roomId     = @roomIdPrefix  + @roomName
+    @storageKey = @storagePrefix + @roomName
     @
 
   getChatBoxId: (clientId) ->
@@ -42,6 +42,7 @@ class @RoomController
   addRoomSpace: ->
     template = $(Templates[@roomSpaceTemplateKey])
     template.attr("id",@roomId)
+    template.find(".btn-close:first").attr(@roomNameAttr,@roomName)
     $("##{@mainSpaceId}").append(template)
 
   activate: (callback) ->
