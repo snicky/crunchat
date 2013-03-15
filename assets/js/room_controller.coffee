@@ -5,6 +5,8 @@ class @RoomController
     @mainSpaceId            = "main-space"
     @roomSpaceTemplate      = "room-space-template"
     @roomNameAttr           = "data-room-name"
+    @roomIdPrefix           = "room-"
+    @chatBoxIdPrefix        = "chat-box-"
     @myBoxClass             = "my"
     @fullBoxClass           = "full"
     @halfBoxClass           = "half"
@@ -12,7 +14,6 @@ class @RoomController
     @secondHalfBoxClass     = "second-half"
     @chatBoxClass           = "chat-box"
     @chatBoxTemplateId      = "chat-box-template"
-    @clientIdAttr           = "data-client-id"
     @diffCoder              = new DiffCoder()
     @storage                = new SNStorage()
     @permStorage            = new SNStorage("perm")
@@ -20,17 +21,18 @@ class @RoomController
 
   for: (roomName) ->
     @roomName   = roomName
-    @storageKey = "#{@storagePrefix}#{@roomName}"
+    @roomId     = @roomIdPrefix  + @roomName
+    @storageKey = @storagePrefix + @roomName
     @
     
-  addChatSpace: ->
+  addRoomSpace: ->
     template = $($("##{@roomSpaceTemplate}").html().trim()).clone()
-    template.attr(@roomNameAttr,@roomName)
+    template.attr("id",@roomId)
     $("##{@mainSpaceId}").append(template)
 
   activate: (callback) ->
     @rooms.push(@roomName)
-    @addChatSpace()
+    @addRoomSpace()
     myBox = @addMyBox()
     @storage.setItem(@storageKey, myBox.val())
     myBox.on "keyup", =>
@@ -47,17 +49,17 @@ class @RoomController
     personalInfo = template.find(".personal-info")
     personalInfo.text(@permStorage.getItem("nickname") + ":")
     template.addClass(@myBoxClass).addClass(@fullBoxClass)
-    $("div[#{@roomNameAttr}=#{@roomName}] .clearfix").before(template)
+    $("##{@roomId} .clearfix").before(template)
     @scaleBoxes()
     return template
 
   addBox: (data) ->
     template = $($("##{@chatBoxTemplateId}").html().trim()).clone()
-    template.attr(@clientIdAttr,data.clientId)
+    template.attr("id", @chatBoxIdPrefix + data.clientId)
     personalInfo = template.find(".personal-info")
     personalInfo.text("#{data.nickname}:")
     template.find("textarea").attr("disabled",1)
-    $("div[#{@roomNameAttr}=#{@roomName}] .clearfix").before(template)
+    $("##{@roomId} .clearfix").before(template)
     @scaleBoxes()
     return template
 
@@ -65,7 +67,7 @@ class @RoomController
     clean = =>
       boxes.removeClass(@fullBoxClass).removeClass(@firstHalfBoxClass).removeClass(@secondHalfBoxClass)
 
-    boxes = $("div[#{@roomNameAttr}=#{@roomName}] .#{@chatBoxClass}")
+    boxes = $("##{@roomId} .#{@chatBoxClass}")
     if boxes.length < 3
       clean()
       boxes.addClass("full")
@@ -80,24 +82,24 @@ class @RoomController
       boxes.eq(1).add(boxes.eq(3)).addClass(@secondHalfBoxClass)
 
   removeBox: (clientId) ->
-    $("div[#{@roomNameAttr}=#{@roomName}] div[#{@clientIdAttr}=#{clientId}]").remove()
+    $("##{@roomId} ##{@chatBoxIdPrefix}#{clientId}").remove()
     @scaleBoxes()
 
-  removeChatSpace: ->
-    $(".chat-space[data-room-name='#{@roomName}']").remove()
+  removeRoomSpace: ->
+    $("##{@roomId}").remove()
 
   leaveRoom: ->
-    @removeChatSpace()
+    @removeRoomSpace()
     roomIndex = @rooms.indexOf(@roomName)
     @rooms.splice(roomIndex, 1)
     
   distributeText: (data) ->
-    ta = $("div[#{@roomNameAttr}=#{@roomName}] .#{@chatBoxClass}[#{@clientIdAttr}=#{data.clientId}] textarea")
+    ta = $("##{@roomId} ##{@chatBoxIdPrefix}#{data.clientId} textarea")
     newText = @diffCoder.decode(ta.text(), data.diff)
     ta.text(newText)
     ta.scrollToCaret(data.caretPos) unless ta.is(":focus")
 
   # distribute other client's nickname!
   distributeNickname: (data) ->
-    chatBox = $(".#{@chatBoxClass}[#{@clientIdAttr}=#{data.clientId}]")
+    chatBox = $("##{@chatBoxIdPrefix}#{data.clientId}")
     chatBox.find(".personal-info").text("#{data.nickname}:")
