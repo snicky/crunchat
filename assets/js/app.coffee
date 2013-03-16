@@ -1,10 +1,15 @@
 #= require lib/jquery
 #= require lib/bootstrap
 #= require lib/diff_match_patch
+#= require lib/underscore
 #= require js_extensions
 #= require jquery_extensions
 #= require diff_coder
 #= require sn_storage
+#= require nav_tab
+#= require room
+#= require user
+#= require nickname
+#= require chat_controller
 #= require nav_controller
-#= require room_controller
 #= require main

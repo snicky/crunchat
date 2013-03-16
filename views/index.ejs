@@ -3,7 +3,7 @@
     <div class="span12 align-center">
 
       <ul id="nav-space" class="nav nav-tabs">
-        <li class="nav-tab active" data-special="lobby">
+        <li id="nav-lobby" class="nav-tab active">
           <a href="#"><i id="add-room-icon" class="icon-plus"></i></a>
         </li>
         <li class="float-right">
@@ -21,7 +21,7 @@
             <div class="row-fluid">
               <div class="span10 offset1">
                 <div id="main-space">
-                  <div id="lobby" class="special-space">
+                  <div id="lobby">
                     <div class="input-append no-margin-bottom">
                       <input id="room-name" class="input-large" type="text" placeholder="Choose a room name">
                       <button id="join-button" class="btn btn-primary">
@@ -43,8 +43,8 @@
 
 <script>
   var Templates = {
-    roomSpace : '<div class="chat-space"><button class="btn btn-mini btn-danger btn-close top-right" type="button"><i class="icon-remove"></i></button><div class="clearfix"></div></div>',
-    chatBox   : '<div class="chat-box"><div class="personal-info"></div><textarea rows="10"></textarea></div>',
-    navTab    : '<li class="nav-tab"><a href="#"></a></li>'
+    roomSpace : '<div class="room-space"><button class="btn btn-mini btn-danger btn-close top-right" type="button"><i class="icon-remove"></i></button><div class="clearfix"></div></div>',
+    userSpace : '<div class="user-space"><div class="personal-info"></div><textarea rows="10"></textarea></div>',
+    navTab    : '<li class="nav-tab nav-room"><a href="#"></a></li>'
   }
 </script>

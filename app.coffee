@@ -55,9 +55,8 @@ io.sockets.on "connection", (socket) ->
   socket.clientId = ext.parseClientId(socket)
 
   socket.getRooms = ->
-    for k,v of io.sockets.manager.roomClients[socket.id]
-      # room names from manager.roomClients contain "/" slash as the first char
-      k.substring(1) if k
+    # room names from manager.roomClients contain "/" slash as the first char
+    (k.substring(1) for k,v of io.sockets.manager.roomClients[socket.id] when k)
 
   socket.getPeersIds = ->
     peers = []
@@ -89,7 +88,7 @@ io.sockets.on "connection", (socket) ->
     else
       socket.emit "refuseJoiningRoom",
         reason   : "full"
-        roomName : roomName    
+        roomName : roomName
 
   socket.on "joinRoom", (data) ->
     roomName = data.roomName if data

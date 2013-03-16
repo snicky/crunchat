@@ -28,11 +28,11 @@ body {
 	box-shadow: 1px 1px 3px #777;
 }
 
-.chat-space {
+.room-space {
 	margin-left: -12px;
 }
 
-.chat-space textarea {
+.room-space textarea {
 	width: 100%;
 }
 
