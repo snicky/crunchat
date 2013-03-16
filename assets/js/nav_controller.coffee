@@ -6,6 +6,7 @@ class @NavController
     @navSpaceId             = "nav-space"
     @navTabClass            = "nav-tab"
     @navTabIdPrefix         = "nav-tab-"
+    @lobbyNavTabId          = "nav-tab-lobby"
     @navTabTemplateKey      = "navTab"
     @chatSpaceClass         = "chat-space"
     @specialSpaceClass      = "special-space"
@@ -27,19 +28,25 @@ class @NavController
   getNavTabId: (roomName) ->
     @navTabIdPrefix + roomName
 
+  pullRoomName: (tab) ->
+    navTabId = tab.attr("id")
+    navTabId.replace(@navTabIdPrefix,"") if navTabId
+
   historyPushRoomName: (roomName) ->
     history.pushState(null, null, "_#{roomName}")
 
   addTab: (roomName) ->
     template = $(Templates[@navTabTemplateKey])
     template.attr("id",@getNavTabId(roomName))
-    template.attr(@roomNameAttr,roomName)
     template.find("a").text(roomName)
     $("##{@navSpaceId}").append(template)
     @activateTab(template)
 
+  removeTab: (roomName) ->
+    $("##{@getNavTabId(roomName)}").remove()
+
   activateTab: (tab) ->
-    roomName = tab.attr(@roomNameAttr)
+    roomName = @pullRoomName(tab)
     @historyPushRoomName(roomName) if roomName
     $(".#{@navTabClass}").removeClass("active")
     tab.addClass("active")
@@ -48,17 +55,11 @@ class @NavController
   activateLastTab: ->
     $(".#{@navTabClass}:last").addClass("active")
 
-  removeTab: (roomName) ->
-    console.log("##{@getNavTabId(roomName)}")
-    $("##{@getNavTabId(roomName)}").remove()
-
   showChatSpace: (tab) ->
-    $tab = $(tab)
-    roomName = $tab.attr(@roomNameAttr)
-    special  = $tab.attr(@specialAttr) unless roomName
+    roomName = @pullRoomName(tab)
+    special  = tab.attr(@specialAttr) unless roomName
     $(".#{@chatSpaceClass}").hide()
     $(".#{@specialSpaceClass}").hide()
-    console.log(roomName)
     if roomName
       $("#room-#{roomName}").show()
     else if special
@@ -130,7 +131,6 @@ class @NavController
       @joinRoom(roomName)
 
     $("##{@randomButtonId}").click =>
-      console.log('random button click')
       @socket.emit "joinRandomRoom"
 
     $("#main-space").on "click", ".#{@closeButtonClass}", ->

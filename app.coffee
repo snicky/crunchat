@@ -74,10 +74,8 @@ io.sockets.on "connection", (socket) ->
         clientId : socket.clientId
         nickname : socket.nickname
 
-  socket.on "joinRoom", (data) ->
-    roomName = data.roomName if data
-    roomName = String.random(settings.idLength) unless roomName
-    clients  = for client in io.sockets.clients(roomName)
+  socket.doJoinRoom = (roomName) ->
+    clients = for client in io.sockets.clients(roomName)
       { clientId : ext.parseClientId(client) , nickname : client.nickname }
     if clients.length < settings.clientsPerRoom
       socket.join(roomName)
@@ -91,31 +89,23 @@ io.sockets.on "connection", (socket) ->
     else
       socket.emit "refuseJoiningRoom",
         reason   : "full"
-        roomName : roomName
+        roomName : roomName    
+
+  socket.on "joinRoom", (data) ->
+    roomName = data.roomName if data
+    # delete next line?
+    roomName = String.random(settings.idLength) unless roomName
+    socket.doJoinRoom(roomName)
 
   socket.on "joinRandomRoom", (data) ->
     rooms = []
     for k,v of io.sockets.manager.rooms
       if k
-        console.log(socket.id)
-        console.log(v)
-        console.log(v.indexOf(socket.id))
-        console.log(!(v.length >= settings.clientsPerRoom) and v.indexOf(socket.id) == -1)
         if !(v.length >= settings.clientsPerRoom) and v.indexOf(socket.id) == -1
           rooms.push(k.substring(1))
-    console.log(rooms)
     randomRoomName = rooms[Math.floor(Math.random() * rooms.length)]
     if randomRoomName
-      clients = for client in io.sockets.clients(randomRoomName)
-        { clientId : ext.parseClientId(client) , nickname : client.nickname }
-      socket.join(randomRoomName)
-      socket.emit "confirmJoiningRoom",
-        roomName : randomRoomName
-        clients  : clients
-      socket.broadcast.to(randomRoomName).emit "announceNewClient",
-        roomName : randomRoomName
-        clientId : socket.clientId
-        nickname : socket.nickname
+      socket.doJoinRoom(randomRoomName)
     else
       # do sth
 

@@ -7,7 +7,7 @@ class @RoomController
     @roomIdPrefix           = "room-"
     @chatBoxIdPrefix        = "chat-box-"
     @textareaIdPrefix       = "textarea-"
-    @myBoxIdPrefix          = "my-"
+    @myBoxIdPrefix          = "my-chat-box-"
     @myTextareaIdPrefix     = "my-textarea-"
     @fullBoxClass           = "full"
     @halfBoxClass           = "half"
