@@ -4,7 +4,7 @@ class @User
     @roomName       = attrs.roomName
     @userID         = attrs.userID
     @nickname       = attrs.nickname
-    @textStorageKey = Settings.textStoragePrefix + @roomName if @userID == "me"
+    @textStorageKey = Common.settings.textStoragePrefix + @roomName if @userID == "me"
     @putInDom()
 
   putInDom: ->
@@ -15,7 +15,7 @@ class @User
     @$textarea = @$dom.find("textarea:first")
 
     if @userID == "me"
-      @$dom.addClass(Settings.classes.myBox)
+      @$dom.addClass(Common.classes.myBox)
     else
       @$dom.find("textarea:first").attr
         disabled : 1

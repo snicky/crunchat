@@ -3,14 +3,14 @@ class @Room
   constructor: (name) ->
     @name  = name
     @users = {}
-    @domID = Settings.roomIdPrefix + @name
+    @domID = Common.settings.roomIdPrefix + @name
 
     @$dom = $(Templates.Room)
     @$dom.attr("id",@domID)
     @$closeBtn = @$dom.find(".btn-close:first")
-    @$closeBtn.attr(Settings.roomNameAttr,@name)
+    @$closeBtn.attr(Common.settings.roomNameAttr,@name)
     @$clearfix = @$dom.find(".clearfix:first")
-    $("##{Settings.ids.mainSpace}").append(@$dom)
+    Common.DOM.mainSpace.append(@$dom)
     @addMe()
 
   addMe: ->
@@ -31,21 +31,21 @@ class @Room
 
   scaleBoxes: ->
     clean = =>
-      boxes.removeClass(Settings.classes.fullBox).removeClass(Settings.classes.firstHalfBox).removeClass(Settings.classes.secondHalfBox)
+      boxes.removeClass(Common.classes.fullBox).removeClass(Common.classes.firstHalfBox).removeClass(Common.classes.secondHalfBox)
 
-    boxes = @$dom.find(".#{Settings.classes.userSpace}")
+    boxes = @$dom.find(".#{Common.classes.userSpace}")
     if boxes.length < 3
       clean()
       boxes.addClass("full")
     else if boxes.length == 3
       clean()
       boxes.eq(0).addClass("full")
-      boxes.eq(1).addClass(Settings.classes.firstHalfBox)
-      boxes.eq(2).addClass(Settings.classes.secondHalfBox)
+      boxes.eq(1).addClass(Common.classes.firstHalfBox)
+      boxes.eq(2).addClass(Common.classes.secondHalfBox)
     else
       clean()
-      boxes.eq(0).add(boxes.eq(2)).addClass(Settings.classes.firstHalfBox)
-      boxes.eq(1).add(boxes.eq(3)).addClass(Settings.classes.secondHalfBox)
+      boxes.eq(0).add(boxes.eq(2)).addClass(Common.classes.firstHalfBox)
+      boxes.eq(1).add(boxes.eq(3)).addClass(Common.classes.secondHalfBox)
 
   removeUser: (userID) ->
     @users[userID].$dom.remove()

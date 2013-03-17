@@ -1,8 +1,7 @@
 class @SocketListener
 
-  constructor: (socket, navController) ->
-    @socket        = socket
-    @navController = navController
+  constructor: (socket) ->
+    @socket = socket
     @init()
 
   init: ->
@@ -14,7 +13,7 @@ class @SocketListener
       roomName = data.roomName
 
       Rooms[roomName] = new Room(roomName)
-      @navController.addTab(roomName)
+      Tabs[roomName]  = new NavTab(roomName)
 
       Rooms[roomName].users.me.activateMyTextarea (diff, caretPos) =>
         @socket.emit "textUpdate",

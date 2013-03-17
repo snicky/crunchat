@@ -7,11 +7,10 @@
 #= require diff_coder
 #= require sn_storage
 #= require common
-#= require settings
 #= require nav_tab
 #= require room
 #= require user
 #= require nickname
-#= require nav_controller
+#= require event_listener
 #= require socket_listener
 #= require main

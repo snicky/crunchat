@@ -1,8 +1,9 @@
 initialize = ->
   socket         = io.connect("http://localhost:3000")
   window.Rooms   = {}
-  navController  = new NavController(socket)
-  socketListener = new SocketListener(socket, navController)
+  window.Tabs    = {}
+  eventListener  = new EventListener(socket)
+  socketListener = new SocketListener(socket)
 
 $(initialize)
 
