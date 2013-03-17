@@ -1,7 +1,10 @@
 class @DiffCoder
 
+  constructor: ->
+    @diffMatchPatch = new diff_match_patch()
+
   encode: (o, n) ->
-    diff = (new diff_match_patch()).diff_main(o, n)
+    diff = @diffMatchPatch.diff_main(o, n)
 
     for item in diff
       if item[0] is 0 or item[0] is -1

@@ -6,10 +6,12 @@
 #= require jquery_extensions
 #= require diff_coder
 #= require sn_storage
+#= require common
+#= require settings
 #= require nav_tab
 #= require room
 #= require user
 #= require nickname
-#= require chat_controller
 #= require nav_controller
+#= require socket_listener
 #= require main

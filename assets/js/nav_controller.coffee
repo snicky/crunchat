@@ -1,24 +1,21 @@
 class @NavController
 
-  constructor: (chatController) ->
-    @chatController         = chatController
-    @tabs = []
-    @navSpaceId             = "nav-space"
-    @navTabClass            = "nav-tab"
-    @lobbyNavTabId          = "nav-lobby"
-    @roomSpaceClass         = "room-space"
-    @lobbyId                = "lobby"
-    @navTabTemplateKey      = "navTab"
-    @roomNameId             = "room-name"
-    @joinButtonId           = "join-button"
-    @randomButtonId         = "random-button"
-    @closeButtonClass       = "btn-close"
-    @addRoomIconId          = "add-room-icon"
-    @nicknameChangeButtonId = "nickname-change-btn"
-    @roomNameAttr           = "data-room-name"
-    @permStorage            = new SNStorage("perm")
-    @maxStringLength        = 32
+  constructor: (socket) ->
+    @socket = socket
+    @tabs   = []
     @initEvents()
+    @catchRoomNameParam()
+
+  joinRoom: (roomName) ->
+    if roomName.length < Settings.maxStringLength && !Rooms[roomName]
+      @socket.emit "joinRoom", 
+        roomName : roomName
+
+  catchRoomNameParam: ->  
+    roomNameMatch = window.location.pathname.match(/_\w+/)
+    if roomNameMatch
+      roomName = roomNameMatch[0].substring(1)
+      @joinRoom(roomName)
 
   addTab: (roomName) ->
     tab = new NavTab(roomName)
@@ -39,42 +36,42 @@ class @NavController
     if lastTab
       lastTab.activate()
     else
-      $("##{@lobbyNavTabId}").addClass("active")
+      $("##{Settings.ids.lobbyNavTab}").addClass("active")
       $("#lobby").show()
 
   initEvents: ->
     nc = @
-    $("##{@lobbyNavTabId}").on "click", ->
+    $("##{Settings.ids.lobbyNavTab}").on "click", ->
       target = $(this)
       if !target.hasClass("active")
-        $(".#{nc.navTabClass}").removeClass("active")
+        $(".#{Settings.classes.navTab}").removeClass("active")
         target.addClass("active")
-        $(".#{nc.roomSpaceClass}").hide()
-        $("##{nc.lobbyId}").show()
+        $(".#{Settings.classes.roomSpace}").hide()
+        $("##{Settings.ids.lobby}").show()
+        return false
 
-    $("##{@navSpaceId}").on "click", ".nav-room", ->
+    $("##{Settings.ids.navSpace}").on "click", ".nav-room", ->
       target = $(this)
-      if !target.hasClass("active")
-        roomName = target.attr(nc.roomNameAttr)
-        nc.findTab(roomName).activate()
+      roomName = target.attr(Settings.roomNameAttr)
+      nc.findTab(roomName).activate()
       return false
 
-    $("##{@nicknameChangeButtonId}").click =>
+    $("##{Settings.ids.nicknameChangeButton}").click =>
       newNickname = Nickname.change()
       if newNickname
-        @chatController.socket.emit "updateNickname",
+        @socket.emit "updateNickname",
           nickname: newNickname
 
-    $("##{@joinButtonId}").click =>
-      roomName = $("##{@roomNameId}").val()
-      @chatController.joinRoom(roomName)
+    $("##{Settings.ids.joinButton}").click =>
+      roomName = $("##{Settings.ids.roomNameInput}").val()
+      @joinRoom(roomName)
 
-    $("##{@randomButtonId}").click =>
-      @chatController.emit "joinRandomRoom"
+    $("##{Settings.ids.randomButton}").click =>
+      @socket.emit "joinRandomRoom"
 
-    $("#main-space").on "click", ".#{@closeButtonClass}", ->
-      roomName = $(this).attr(nc.roomNameAttr)
-      nc.chatController.socket.emit "leaveRoom",
+    $("#main-space").on "click", ".#{Settings.classes.closeButton}", ->
+      roomName = $(this).attr(Settings.roomNameAttr)
+      nc.socket.emit "leaveRoom",
         roomName : roomName
       Rooms[roomName].leave()
       nc.removeTab(roomName)

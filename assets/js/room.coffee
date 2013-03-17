@@ -1,36 +1,23 @@
 class @Room
 
   constructor: (name) ->
-    @mainSpaceId          = "main-space"
-    @roomSpaceTemplateKey   = "roomSpace"
-    @roomIdPrefix         = "room-"
-    @fullBoxClass         = "full"
-    @halfBoxClass         = "half"
-    @firstHalfBoxClass    = "first-half"
-    @secondHalfBoxClass   = "second-half"
-    @userSpaceClass       = "user-space"
-    @roomNameAttr         = "data-room-name"
-
-
-    @permStorage          = new SNStorage("perm")
-
     @name  = name
     @users = {}
-    @domID = @roomIdPrefix + @name
+    @domID = Settings.roomIdPrefix + @name
 
-    @$dom = $(Templates[@roomSpaceTemplateKey])
+    @$dom = $(Templates.Room)
     @$dom.attr("id",@domID)
     @$closeBtn = @$dom.find(".btn-close:first")
-    @$closeBtn.attr(@roomNameAttr,@name)
+    @$closeBtn.attr(Settings.roomNameAttr,@name)
     @$clearfix = @$dom.find(".clearfix:first")
-    $("##{@mainSpaceId}").append(@$dom)
+    $("##{Settings.ids.mainSpace}").append(@$dom)
     @addMe()
 
   addMe: ->
     @users.me = new User
       roomName : @name
       userID   : "me"
-      nickname : @permStorage.getItem("nickname")
+      nickname : Common.permStorage.getItem("nickname")
     @$clearfix.before(@users.me.$dom)
     @scaleBoxes()
 
@@ -44,21 +31,21 @@ class @Room
 
   scaleBoxes: ->
     clean = =>
-      boxes.removeClass(@fullBoxClass).removeClass(@firstHalfBoxClass).removeClass(@secondHalfBoxClass)
+      boxes.removeClass(Settings.classes.fullBox).removeClass(Settings.classes.firstHalfBox).removeClass(Settings.classes.secondHalfBox)
 
-    boxes = @$dom.find(".#{@userSpaceClass}")
+    boxes = @$dom.find(".#{Settings.classes.userSpace}")
     if boxes.length < 3
       clean()
       boxes.addClass("full")
     else if boxes.length == 3
       clean()
       boxes.eq(0).addClass("full")
-      boxes.eq(1).addClass(@firstHalfBoxClass)
-      boxes.eq(2).addClass(@secondHalfBoxClass)
+      boxes.eq(1).addClass(Settings.classes.firstHalfBox)
+      boxes.eq(2).addClass(Settings.classes.secondHalfBox)
     else
       clean()
-      boxes.eq(0).add(boxes.eq(2)).addClass(@firstHalfBoxClass)
-      boxes.eq(1).add(boxes.eq(3)).addClass(@secondHalfBoxClass)
+      boxes.eq(0).add(boxes.eq(2)).addClass(Settings.classes.firstHalfBox)
+      boxes.eq(1).add(boxes.eq(3)).addClass(Settings.classes.secondHalfBox)
 
   removeUser: (userID) ->
     @users[userID].$dom.remove()

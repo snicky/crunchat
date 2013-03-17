@@ -1,28 +1,21 @@
 class @User
 
-  @userSpaceTemplateKey = "userSpace"
-  @diffCoder            = new DiffCoder()
-  @storage              = new SNStorage()
-  @storagePrefix        = "text:"
-
   constructor: (attrs) ->
-    @myBoxClass = "my"
-
-    @roomName   = attrs.roomName
-    @userID     = attrs.userID
-    @nickname   = attrs.nickname
-    @storageKey = @storagePrefix + @roomName if @userID == "me"
+    @roomName       = attrs.roomName
+    @userID         = attrs.userID
+    @nickname       = attrs.nickname
+    @textStorageKey = Settings.textStoragePrefix + @roomName if @userID == "me"
     @putInDom()
 
   putInDom: ->
-    @$dom = $(Templates[User.userSpaceTemplateKey])
+    @$dom = $(Templates.User)
     @$dom.attr("id", @getDomID())
     @$personalInfo = @$dom.find(".personal-info:first")
     @$personalInfo.text(@nickname + ":")
     @$textarea = @$dom.find("textarea:first")
 
     if @userID == "me"
-      @$dom.addClass(@myBoxClass)
+      @$dom.addClass(Settings.classes.myBox)
     else
       @$dom.find("textarea:first").attr
         disabled : 1
@@ -31,7 +24,7 @@ class @User
     @roomName + "-" + @userID
 
   distributeText: (data) ->
-    newText = User.diffCoder.decode(@$textarea.text(), data.diff)
+    newText = Common.diffCoder.decode(@$textarea.text(), data.diff)
     @$textarea.text(newText)
     @$textarea.scrollToCaret(data.caretPos) unless @$textarea.is(":focus")
 
@@ -40,12 +33,12 @@ class @User
     @$personalInfo.text("#{nickname}:")
 
   activateMyTextarea: (callback) ->
-    User.storage.setItem(@storageKey, @$textarea.val())
+    Common.storage.setItem(@textStorageKey, @$textarea.val())
     @$textarea.on "keyup", =>
       currentText = @$textarea.val()
-      storedText  = User.storage.getItem(@storageKey)
+      storedText  = Common.storage.getItem(@textStorageKey)
       unless currentText is storedText
-        diff = User.diffCoder.encode(storedText, currentText)
-        User.storage.setItem(@storageKey, currentText)
+        diff = Common.diffCoder.encode(storedText, currentText)
+        Common.storage.setItem(@textStorageKey, currentText)
         caretPos = @$textarea[0].selectionStart
         callback(diff, caretPos)
