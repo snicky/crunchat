@@ -5,7 +5,8 @@ class @Nickname
     unless nickname
       nickname = @random()
       @set(nickname)
-    Common.DOM.nicknameInput.val(nickname)    
+    Common.DOM.nicknameInput.val(nickname)
+    nickname
 
   @get: ->
     Common.permStorage.getItem("nickname")

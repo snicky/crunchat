@@ -6,14 +6,19 @@ class @SocketListener
 
   init: ->
     @socket.emit "updateNickname",
-      nickname : Nickname.get()
+      nickname : Nickname.init()
 
     @socket.on "confirmJoiningRoom", (data) =>
 
       roomName = data.roomName
 
+      Common.spinner.stop()
+
       Rooms[roomName] = new Room(roomName)
       Tabs[roomName]  = new NavTab(roomName)
+
+      # joinForm is hidden after clicking "Join/Random"
+      Lobby.showJoinForm()
 
       Rooms[roomName].users.me.activateMyTextarea (diff, caretPos) =>
         @socket.emit "textUpdate",
@@ -40,7 +45,9 @@ class @SocketListener
           subject.changeNickname(data.nickname)
 
     @socket.on "refuseJoiningRoom", (data) ->
-      msg = "Couldnt join room ##{data.roomName}. Reason: "
-      msg = if data.reason == "full"
-        msg += "ROOM FULL"
-      alert(msg)
+      Common.spinner.stop()
+      Lobby.show()
+      if data.reason == "full"
+        Lobby.setLobbyInfo("Room ##{data.roomName} is full :(")
+      else if data.reason == "noRooms"
+        Lobby.setLobbyInfo("There are no rooms to join now. Go ahead and create your own.")

@@ -7,7 +7,19 @@ class @EventListener
     @catchRoomNameParam()
 
   joinRoom: (roomName) ->
-    if roomName.length < Common.settings.maxStringLength && !Rooms[roomName]
+    msg = if Rooms[roomName]
+      "You are already in this room!"
+    else if roomName.length > Common.settings.maxStringLength
+      "The room name can't be longer than 
+        #{Common.settings.maxStringLength} characters."
+    else if roomName.match(/[^\w]/)
+      "The room name contains illegal characters (only letters, digits and underscores are allowed)."
+
+    if msg
+      Lobby.setLobbyInfo(msg)
+    else
+      Lobby.hide()
+      Common.spinner.spin(Common.DOM.mainSpinner)
       @socket.emit "joinRoom", 
         roomName : roomName
 
@@ -27,13 +39,15 @@ class @EventListener
       Tabs[lastRoomName].activate()
     else
       Common.DOM.lobbyNavTab.addClass("active")
-      Common.DOM.lobby.show()
+      Lobby.show()
 
   catchRoomNameParam: ->  
     roomNameMatch = window.location.pathname.match(/_\w+/)
     if roomNameMatch
       roomName = roomNameMatch[0].substring(1)
       @joinRoom(roomName)
+    else
+      Common.DOM.joinForm.show()
 
   bindEvents: ->
     el = @
@@ -44,7 +58,7 @@ class @EventListener
         $(".#{Common.classes.navTab}").removeClass("active")
         target.addClass("active")
         $(".#{Common.classes.roomSpace}").hide()
-        Common.DOM.lobby.show()
+        Lobby.show()
         return false
 
     Common.DOM.navSpace.on "click", ".nav-room", ->
@@ -53,17 +67,27 @@ class @EventListener
       Tabs[roomName].activate()
       return false
 
+    Common.DOM.nicknameInput.keypress (e) ->
+      if e.which == 13
+        Common.DOM.nicknameChangeButton.click()
+
     Common.DOM.nicknameChangeButton.click =>
       newNickname = Nickname.change()
       if newNickname
         @socket.emit "updateNickname",
           nickname: newNickname
 
+    Common.DOM.roomNameInput.keypress (e) ->
+      if e.which == 13
+        Common.DOM.joinButton.click()
+
     Common.DOM.joinButton.click =>
       roomName = Common.DOM.roomNameInput.val()
       @joinRoom(roomName)
 
     Common.DOM.randomButton.click =>
+      Lobby.hide()
+      Common.spinner.spin(Common.DOM.mainSpinner)
       @socket.emit "joinRandomRoom"
 
     $("#main-space").on "click", ".#{Common.classes.closeButton}", ->
