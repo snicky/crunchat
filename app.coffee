@@ -19,7 +19,7 @@ ext = require("./ext/custom")(settings)
 # Express settings
 app = express()
 app.configure ->
-  app.set "port", process.env.PORT or 3000
+  app.set "port", process.env.PORT or 80
   app.set "views", __dirname + "/views"
   app.set "view engine", "ejs"
   app.use partials()
