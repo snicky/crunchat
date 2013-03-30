@@ -1,5 +1,5 @@
 initialize = ->
-  socket         = io.connect("http://web1.tunnlr.com:11630")
+  socket         = io.connect("http://crunchat.com")
   window.Rooms   = {}
   window.Tabs    = {}
   eventListener  = new EventListener(socket)
