@@ -39,7 +39,6 @@ app.configure "development", ->
 
 # Routes
 app.get "/"           , routes.index
-app.get "/2"           , routes.index2
 app.get "/_:roomName" , routes.index
 
 # Init
@@ -106,7 +105,8 @@ io.sockets.on "connection", (socket) ->
     if randomRoomName
       socket.doJoinRoom(randomRoomName)
     else
-      # do sth
+      socket.emit "refuseJoiningRoom",
+        reason : "noRooms"
 
   socket.on "leaveRoom", (data) ->
     socket.leave(data.roomName)

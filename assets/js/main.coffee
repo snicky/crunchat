@@ -1,5 +1,5 @@
 initialize = ->
-  socket         = io.connect("http://localhost:3000")
+  socket         = io.connect("http://web1.tunnlr.com:11630")
   window.Rooms   = {}
   window.Tabs    = {}
   eventListener  = new EventListener(socket)

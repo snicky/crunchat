@@ -12,11 +12,8 @@ class @NavTab
     history.pushState(null, null, "_#{@roomName}")
     $(".#{Common.classes.navTab}").removeClass("active")
     @$dom.addClass("active")
-    @showRoomSpace()
-
-  showRoomSpace: ->
     $(".#{Common.classes.roomSpace}").hide()
-    Common.DOM.lobby.hide()
+    Lobby.hide()
     Rooms[@roomName].$dom.show()
 
   remove: ->
