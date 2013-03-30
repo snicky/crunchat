@@ -1,7 +1,8 @@
 initialize = ->
-  socket         = io.connect("http://localhost:3000")
+  socket         = io.connect("http://web1.tunnlr.com:11630")
   window.Rooms   = {}
   window.Tabs    = {}
+  Nickname.init()
   eventListener  = new EventListener(socket)
   socketListener = new SocketListener(socket)
 
