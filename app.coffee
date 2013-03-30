@@ -41,12 +41,22 @@ app.configure "development", ->
 app.get "/"           , routes.index
 app.get "/_:roomName" , routes.index
 
+
+sessionCleanup = ->
+  sessionStore.all (n, s) ->
+    i = 0
+    while i < s.length
+      sessionStore.get s[i], ->
+      i++
+
 # Init
 server = http.createServer(app)
 io     = socketIo.listen(server)
 
 server.listen app.get("port"), ->
   console.log "Express server listening on port " + app.get("port")
+
+setInterval(sessionCleanup, 7200000)
 
 # Websockets
 io.sockets.on "connection", (socket) ->
