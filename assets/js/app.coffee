@@ -2,12 +2,14 @@
 #= require lib/bootstrap
 #= require lib/diff_match_patch
 #= require lib/underscore
+#= require lib/spin
 #= require js_extensions
 #= require jquery_extensions
 #= require diff_coder
 #= require sn_storage
 #= require common
 #= require nav_tab
+#= require lobby
 #= require room
 #= require user
 #= require nickname
