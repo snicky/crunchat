@@ -56,3 +56,6 @@ class @Room
     # need to clean up all the variables?
     @$dom.remove()
     delete Rooms[@name]
+
+  becomeOp: ->
+    $("body").css("background-color","black")

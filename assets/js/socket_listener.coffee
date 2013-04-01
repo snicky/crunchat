@@ -51,3 +51,6 @@ class @SocketListener
         Lobby.setLobbyInfo("Room ##{data.roomName} is full :(")
       else if data.reason == "noRooms"
         Lobby.setLobbyInfo("There are no rooms to join now. Go ahead and create your own.")
+
+    @socket.on "changeToOp", (data) ->
+      Rooms[data.roomName].becomeOp()

@@ -59,6 +59,9 @@ server.listen app.get("port"), ->
 setInterval(sessionCleanup, 7200000)
 
 # Websockets
+privateRooms = []
+roomOps      = {}
+
 io.sockets.on "connection", (socket) ->
 
   socket.clientId = ext.parseClientId(socket)
@@ -71,7 +74,7 @@ io.sockets.on "connection", (socket) ->
     peers = []
     for roomName in socket.getRooms()
       for client in io.sockets.clients(roomName)
-        peers.push(client.id) if client.id != socket.id && peers.indexOf(client.id) == -1
+        peers.push(client.id) if client.id != ext.parseClientId(socket) && peers.indexOf(client.id) == -1
     peers
 
   socket.on "updateNickname", (data) ->
@@ -83,13 +86,21 @@ io.sockets.on "connection", (socket) ->
         nickname : socket.nickname
 
   socket.doJoinRoom = (roomName) ->
+    console.log "doJoinRoom"
     clients = for client in io.sockets.clients(roomName)
       { clientId : ext.parseClientId(client) , nickname : client.nickname }
     if clients.length < settings.clientsPerRoom
+      console.log "CLIENTS.LENGTH = #{clients.length}"
+      if clients.length == 0
+        roomOps[roomName] = socket.id
+        isOp = true
       socket.join(roomName)
       socket.emit "confirmJoiningRoom",
         roomName : roomName
         clients  : clients
+      if isOp
+        socket.emit "changeToOp",
+          roomName : roomName
       socket.broadcast.to(roomName).emit "announceNewClient",
         roomName : roomName
         clientId : socket.clientId
@@ -100,6 +111,7 @@ io.sockets.on "connection", (socket) ->
         roomName : roomName
 
   socket.on "joinRoom", (data) ->
+    console.log("joinRoom")
     roomName = data.roomName if data
     # delete next line?
     roomName = String.random(settings.idLength) unless roomName
@@ -109,7 +121,7 @@ io.sockets.on "connection", (socket) ->
     rooms = []
     for k,v of io.sockets.manager.rooms
       if k
-        if !(v.length >= settings.clientsPerRoom) and v.indexOf(socket.id) == -1
+        if privateRooms.indexOf(v) == -1 and !(v.length >= settings.clientsPerRoom) and v.indexOf(socket.id) == -1
           rooms.push(k.substring(1))
     randomRoomName = rooms[Math.floor(Math.random() * rooms.length)]
     if randomRoomName
@@ -120,9 +132,16 @@ io.sockets.on "connection", (socket) ->
 
   socket.on "leaveRoom", (data) ->
     socket.leave(data.roomName)
-    io.sockets.in(data.roomName).emit 'announceClientRemoval',
-      roomName : data.roomName
-      clientId : socket.clientId
+    if io.sockets.clients(roomName).length == 0
+      delete roomOps[roomName]
+    else
+      newOpId = io.sockets.clients(roomName)[0].id
+      roomOps[roomName] = newOpId
+      io.sockets.in(data.roomName).emit 'announceClientRemoval',
+        roomName : data.roomName
+        clientId : socket.clientId
+      io.sockets.sockets[newOpId].emit 'changeToOp',
+        roomName : data.roomName
 
   socket.on "disconnect", ->
     for roomName in socket.getRooms()
@@ -137,7 +156,10 @@ io.sockets.on "connection", (socket) ->
       diff     : data.diff
       caretPos : data.caretPos
 
-
+  socket.on "makeRoomPrivate", (data) ->
+    if roomOps[data.roomName] == socket.id && privateRooms.indexOf(data.roomName) == -1
+      privateRooms.push(data.roomName) 
+      io.sockets.in(data.roomName).emit "confirmMakingRoomPrivate"
 
 ###
   socket.findPartners = ->
