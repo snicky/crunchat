@@ -42,3 +42,6 @@ class @User
         Common.storage.setItem(@textStorageKey, currentText)
         caretPos = @$textarea[0].selectionStart
         callback(diff, caretPos)
+
+  focusOnTextarea: ->
+    @$textarea.focus()

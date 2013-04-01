@@ -15,6 +15,7 @@ class @NavTab
     $(".#{Common.classes.roomSpace}").hide()
     Lobby.hide()
     Rooms[@roomName].$dom.show()
+    Rooms[@roomName].users.me.focusOnTextarea()
 
   remove: ->
     @.$dom.remove()
