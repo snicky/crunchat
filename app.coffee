@@ -19,7 +19,7 @@ ext = require("./ext/custom")(settings)
 # Express settings
 app = express()
 app.configure ->
-  app.set "port", process.env.PORT or 80
+  app.set "port", process.env.PORT or 8080
   app.set "views", __dirname + "/views"
   app.set "view engine", "ejs"
   app.use partials()
@@ -54,7 +54,7 @@ server = http.createServer(app)
 io     = socketIo.listen(server)
 
 server.listen app.get("port"), ->
-  console.log "Express server listening on port " + app.get("port")
+  console.log "Express #{app.get("env")} server listening on port #{app.get("port")}"
 
 setInterval(sessionCleanup, 7200000)
 
