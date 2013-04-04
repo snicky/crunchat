@@ -24,7 +24,7 @@ module.exports = (io, socket) ->
       confirmJoiningRoomHash = 
         roomName    : roomName
         clients     : clients
-        roomPrivate : io.isRoomPrivate(roomName)
+        roomPrivate : (isOp && socket.defaultRoomPrivacy) || io.isRoomPrivate(roomName)
       confirmJoiningRoomHash["isOp"] = true if isOp    
       socket.emit "confirmJoiningRoom", confirmJoiningRoomHash
       socket.broadcast.to(roomName).emit "announceNewClient",
@@ -82,8 +82,10 @@ module.exports = (io, socket) ->
     if socket.isRoomOp(data.roomName)
       if data.boolSwitch
         io.makeRoomPrivate(data.roomName)
+        socket.defaultRoomPrivacy = true
       else
         io.makeRoomPublic(data.roomName)
+        socket.defaultRoomPrivacy = false
 
       socket.broadcast.to(data.roomName).emit "confirmToggleRoomPrivacy",
         roomName   : data.roomName
