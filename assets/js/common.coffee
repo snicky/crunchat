@@ -27,7 +27,9 @@ class @Common
   @classes =
     navTab               : "nav-tab"
     roomSpace            : "room-space"
+    roomControl          : "room-control"
     closeButton          : "btn-close"
+    roomPrivacyCheckbox  : "room-privacy-checkbox"
     myBox                : "my"
     fullBox              : "full"
     halfBox              : "half"

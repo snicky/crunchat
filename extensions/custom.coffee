@@ -1,6 +1,6 @@
 module.exports = ->
 
-  String.random = (length) ->
+  randomString: (length) ->
     text = ""
     possible = "abcdefghijklmnopqrstuvwxyz0123456789"
     
@@ -10,3 +10,6 @@ module.exports = ->
       i++
     
     text
+
+  arraySample: (arr) ->
+    arr[Math.floor(Math.random() * arr.length)]

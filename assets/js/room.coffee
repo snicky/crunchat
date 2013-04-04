@@ -7,8 +7,10 @@ class @Room
 
     @$dom = $(Templates.Room)
     @$dom.attr("id",@domID)
-    @$closeBtn = @$dom.find(".btn-close:first")
-    @$closeBtn.attr(Common.settings.roomNameAttr,@name)
+    @$roomControl = @$dom.find(".room-control:first")
+    @$roomControl.attr(Common.settings.roomNameAttr,@name)
+    @$roomPrivacyCheckbox = @$roomControl.find(".#{Common.classes.roomPrivacyCheckbox}:first")
+    @$closeBtn = @$roomControl.find(".btn-close:first")
     @$clearfix = @$dom.find(".clearfix:first")
     Common.DOM.mainSpace.append(@$dom)
     @addMe()
@@ -58,4 +60,7 @@ class @Room
     delete Rooms[@name]
 
   becomeOp: ->
-    $("body").css("background-color","black")
+    @$roomPrivacyCheckbox.attr("disabled",false)
+
+  tickRoomPrivacyCheckBox: (boolSwitch) ->
+    @$roomPrivacyCheckbox.prop("checked",boolSwitch)

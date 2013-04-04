@@ -15,6 +15,8 @@ class @SocketListener
       Common.spinner.stop()
 
       Rooms[roomName] = new Room(roomName)
+      Rooms[roomName].tickRoomPrivacyCheckBox(true) if data.roomPrivate
+      Rooms[roomName].becomeOp()                    if data.isOp
       Tabs[roomName]  = new NavTab(roomName)
 
       # joinForm is hidden after clicking "Join/Random"
@@ -54,3 +56,6 @@ class @SocketListener
 
     @socket.on "changeToOp", (data) ->
       Rooms[data.roomName].becomeOp()
+
+    @socket.on "confirmToggleRoomPrivacy", (data) ->
+      Rooms[data.roomName].tickRoomPrivacyCheckBox(data.boolSwitch)

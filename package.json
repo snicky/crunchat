@@ -1,5 +1,5 @@
 {
-  "name": "smiglidigli",
+  "name": "crunchat",
   "version": "0.0.1-23",
   "private": true,
   "scripts": {
@@ -19,7 +19,7 @@
     "bootstrap-stylus" : "*",
     "underscore"       : "*"
   },
-  "subdomain": "chatchatchat",
+  "subdomain": "crunchat",
   "engines": {
     "node": "0.8.x"
   }

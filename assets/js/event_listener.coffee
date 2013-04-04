@@ -91,5 +91,12 @@ class @EventListener
       @socket.emit "joinRandomRoom"
 
     $("#main-space").on "click", ".#{Common.classes.closeButton}", ->
-      roomName = $(this).attr(Common.settings.roomNameAttr)
+      roomName = $(this).parent().attr(Common.settings.roomNameAttr)
       el.leaveRoom(roomName)
+
+    $("#main-space").on "click", ".#{Common.classes.roomPrivacyCheckbox}", ->
+      $this = $(this)
+      roomName = $this.parent().attr(Common.settings.roomNameAttr)
+      el.socket.emit "toggleRoomPrivacy", 
+        roomName   : roomName
+        boolSwitch : $this.prop("checked")
