@@ -32,6 +32,6 @@ module.exports = (io, socket) ->
     rooms = []
     for roomName, roomClients of io.rooms
       if roomName
-        if io.isRoomPrivate(roomName) and !(roomClients.length >= settings.clientsPerRoom) and roomClients.indexOf(socket.id) == -1
-          rooms.push(k.substring(1))
+        if !io.isRoomPrivate(roomName) and !(roomClients.length >= settings.clientsPerRoom) and roomClients.indexOf(socket.id) == -1
+          rooms.push(roomName.substring(1))
     randomRoomName = ext.arraySample(rooms)
