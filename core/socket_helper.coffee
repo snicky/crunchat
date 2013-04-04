@@ -30,8 +30,10 @@ module.exports = (io, socket) ->
 
   socket.findRandomRoom = ->
     rooms = []
-    for roomName, roomClients of io.rooms
-      if roomName
+    for roomNameWithSlash, roomClients of io.rooms
+      # empty roomNameWithSlash string indicates a room that holds ALL clients
+      if roomNameWithSlash
+        roomName = roomNameWithSlash.substring(1)
         if !io.isRoomPrivate(roomName) and !(roomClients.length >= settings.clientsPerRoom) and roomClients.indexOf(socket.id) == -1
-          rooms.push(roomName.substring(1))
+          rooms.push(roomName)
     randomRoomName = ext.arraySample(rooms)
