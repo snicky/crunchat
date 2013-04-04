@@ -10,6 +10,10 @@ body {
 	margin-top: 0;
 }
 
+.no-margin, input.no-margin {
+	margin: 0;
+}
+
 .standard-margin-top {
 	margin-top: 15px;
 }
@@ -95,6 +99,10 @@ input.low-input {
 	position: absolute;
 	top: 3px;
 	right: 2px;
+}
+
+.btn-close {
+	margin-left: 15px;
 }
 
 ::-webkit-scrollbar { width: 6px; }
