@@ -1,12 +1,23 @@
 # Requirements
+
+# --- Essentials:
 express    = require("express")
-partials   = require('express-partials')
-socketIo   = require('socket.io')
 http       = require("http")
 path       = require("path")
-_          = require("underscore")
-routes     = require("./routes")
-user       = require("./routes/user")
+partials   = require('express-partials')
+socketIo   = require('socket.io')
+
+# --- Compiling assets:
+connectAssets = require("connect-assets")
+stylus        = require("stylus")
+nib           = require("nib")
+
+# --- Helper libs:
+_ = require("underscore")
+
+# --- Routes:
+routes = require("./routes")
+user   = require("./routes/user")
 
 # Express settings
 app = express()
@@ -22,7 +33,9 @@ app.configure ->
   app.use express.cookieParser("your secret here")
   app.use express.session()
   app.use app.router
-  app.use require('connect-assets')()
+  app.use connectAssets()
+  app.use stylus.middleware
+    src : __dirname + "/assets/css"
   app.use express.static(path.join(__dirname, "public"))
   
 app.configure "development", ->
