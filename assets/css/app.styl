@@ -1,111 +1,103 @@
-body {
-  margin-top: 20px;
-}
+standard-margin = 15px
+half-margin     = standard-margin/2
 
-.no-margin-bottom {
-  margin-bottom: 0;
-}
+body
+  margin-top 20px
 
-.no-margin-top {
-	margin-top: 0;
-}
+.small-font
+	font-size 10.5px
 
-.no-margin, input.no-margin {
-	margin: 0;
-}
+.align-left
+	text-align left
 
-.standard-margin-top {
-	margin-top: 15px;
-}
+.align-center
+  text-align center
 
-.align-center {
-  text-align: center;
-}
+.float-left
+	float left
 
-.align-left {
-	text-align: left;
-	font-size: 12.5px;
-}
+.float-right
+	float right
 
-.main-container {
-	border: 1px solid #ddd;
-	border-top: 0;
-	margin-top: -20px;
-	padding: 20px;
-	min-height: 400px;
-	box-shadow: 1px 1px 3px #777;
-}
+.no-margin-bottom
+  margin-bottom 0
 
-.room-space {
-	margin-left: -12px;
-}
+.no-margin-top
+	margin-top 0
 
-.room-space textarea {
-	width: 100%;
-}
+.no-margin, input.no-margin
+	margin 0
 
-.personal-info {
-	text-align: left;
-	font-size: 10.5px;
-	color: #555555;
-}
+.standard-margin-top
+	margin-top standard-margin
 
-.full {
-	width: 100%;
-}
+.main-container
+	border 1px solid #ddd
+	border-top 0
+	margin-top -20px
+	padding 20px
+	min-height 400px
+	box-shadow 1px 1px 3px #777
 
-.first-half, .second-half {
-	width: 48.5%;
-}
-.first-half {
-	float: left;
-}
-.second-half {
-	float: right;
-}
+.full
+	width 100%
 
-.float-left {
-	float: left;
-}
+.first-half, .second-half
+	width 48.5%
 
-.float-right {
-	float: right;
-}
+.first-half
+	@extend .float-left
 
-.nav-tabs > .float-right {
-	float: right;
-}
+.second-half
+	@extend .float-right
 
-input.low-input {
-	height: 12px;
-	line-height: normal;
-	font-size: 10.5px;
-}
+.room-space
+	margin-left -12px
 
-@media (max-width: 767px) {
-	input.low-input {
-		min-height: 22px;
-		height: 22px;
-		line-height: normal;
-		font-size: 10.5px;
-	}
-}
+.room-space textarea
+	@extend .full
 
-.half-margin-top {
-	padding-top: 7.5px;
-}
+.personal-info
+	@extend .align-left
+	@extend .small-font
+	color #555555
 
-.top-right {
-	position: absolute;
-	top: 3px;
-	right: 2px;
-}
+.nav-tabs > .float-right
+	float right
 
-.btn-close {
-	margin-left: 15px;
-}
+input.low-input
+	@extend .small-font
+	height 12px
+	line-height normal
 
-::-webkit-scrollbar { width: 6px; }
+@media (max-width: 767px)
+	input.low-input
+		@extend .small-font
+		height 22px
+		min-height 22px
+		line-height normal
+
+.half-margin-top
+	padding-top half-margin
+
+.room-control
+	@extend .small-font
+	position absolute
+	top 3px
+	right 2px
+
+.btn-close
+	margin-left half-margin
+
+::-webkit-scrollbar 
+	width 6px
+
 ::-webkit-scrollbar-track { }
-::-webkit-scrollbar-thumb { background: rgba(2,168,236,.2); border-radius: 2px; }
-::-webkit-scrollbar-button { background: none; height: 2px; }
+
+::-webkit-scrollbar-thumb
+	background rgba(2,168,236,.2)
+	border-radius 2px
+
+::-webkit-scrollbar-button 
+	background none
+	height 2px
