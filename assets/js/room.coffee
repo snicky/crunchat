@@ -7,10 +7,10 @@ class @Room
 
     @$dom = $(Templates.Room)
     @$dom.attr("id",@domID)
-    @$roomControl = @$dom.find(".room-control:first")
+    @$roomControl = @$dom.find(".#{Common.classes.roomControl}:first")
     @$roomControl.attr(Common.settings.roomNameAttr,@name)
     @$roomPrivacyCheckbox = @$roomControl.find(".#{Common.classes.roomPrivacyCheckbox}:first")
-    @$closeBtn = @$roomControl.find(".btn-close:first")
+    @$closeBtn = @$roomControl.find(".#{Common.classes.closeButton}:first")
     @$clearfix = @$dom.find(".clearfix:first")
     Common.DOM.mainSpace.append(@$dom)
     @addMe()
@@ -33,7 +33,10 @@ class @Room
 
   scaleBoxes: ->
     clean = =>
-      boxes.removeClass(Common.classes.fullBox).removeClass(Common.classes.firstHalfBox).removeClass(Common.classes.secondHalfBox)
+      boxes
+        .removeClass(Common.classes.fullBox)
+        .removeClass(Common.classes.firstHalfBox)
+        .removeClass(Common.classes.secondHalfBox)
 
     boxes = @$dom.find(".#{Common.classes.userSpace}")
     if boxes.length < 3

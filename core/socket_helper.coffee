@@ -25,7 +25,8 @@ module.exports = (io, socket) ->
     peers = []
     for roomName in socket.getRooms()
       for client in io.clientsInRoom(roomName)
-        peers.push(client.id) if client.id != socket.id && peers.indexOf(client.id) == -1
+        if client.id != socket.id && peers.indexOf(client.id) == -1
+          peers.push(client.id)
     peers
 
   socket.findRandomRoom = ->
@@ -34,6 +35,8 @@ module.exports = (io, socket) ->
       # empty roomNameWithSlash string indicates a room that holds ALL clients
       if roomNameWithSlash
         roomName = roomNameWithSlash.substring(1)
-        if !io.isRoomPrivate(roomName) and !(roomClients.length >= settings.clientsPerRoom) and roomClients.indexOf(socket.id) == -1
-          rooms.push(roomName)
+        unless io.isRoomPrivate(roomName) or
+          roomClients.length >= settings.clientsPerRoom or
+          roomClients.indexOf(socket.id) > -1
+            rooms.push(roomName)
     randomRoomName = ext.arraySample(rooms)
