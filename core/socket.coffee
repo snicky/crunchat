@@ -1,21 +1,23 @@
 module.exports = (io, socket) ->
 
-  ext      = require("../extensions/custom")()
+  require("../assets/js/server_and_client/js_helper")
   settings = require("./settings")()
 
   require("./socket_helper")(io, socket)
+
+  socket.clientId = socket.getClientId()
 
   socket.on "updateNickname", (data) ->
     socket.nickname = data.nickname
 
     for socketId in socket.getPeersIds()
       io.findSocket(socketId).emit "announceNicknameChange",
-        clientId : socket.getClientId()
+        clientId : socket.clientId
         nickname : socket.nickname
 
   socket.doJoinRoom = (roomName) ->
     clients = for client in io.clientsInRoom(roomName)
-      { clientId : client.getClientId(), nickname : client.nickname }
+      { clientId : client.clientId, nickname : client.nickname }
     if clients.length < settings.clientsPerRoom
       if clients.length == 0
         socket.becomeRoomOp(roomName)
@@ -29,7 +31,7 @@ module.exports = (io, socket) ->
       socket.emit "confirmJoiningRoom", confirmJoiningRoomHash
       socket.broadcast.to(roomName).emit "announceNewClient",
         roomName : roomName
-        clientId : socket.getClientId()
+        clientId : socket.clientId
         nickname : socket.nickname
     else
       socket.emit "refuseJoiningRoom",
@@ -39,7 +41,7 @@ module.exports = (io, socket) ->
   socket.on "joinRoom", (data) ->
     roomName = data.roomName if data
     # delete next line?
-    roomName = ext.randomString(settings.idLength) unless roomName
+    roomName = JsHelper.randomString(settings.idLength) unless roomName
     socket.doJoinRoom(roomName)
 
   socket.on "joinRandomRoom", (data) ->
@@ -58,7 +60,7 @@ module.exports = (io, socket) ->
     else
       io.sockets.in(roomName).emit 'announceClientRemoval',
         roomName : roomName
-        clientId : socket.getClientId()
+        clientId : socket.clientId
 
       newOp = io.clientsInRoom(roomName)[0]
       newOp.becomeRoomOp(roomName)
@@ -69,12 +71,13 @@ module.exports = (io, socket) ->
     for roomName in socket.getRooms()
       socket.broadcast.to(roomName).emit "announceClientRemoval",
         roomName : roomName
-        clientId : socket.getClientId()
+        clientId : socket.clientId
 
   socket.on "textUpdate", (data) ->
     socket.broadcast.to(data.roomName).emit 'distributeTextUpdate',
       roomName : data.roomName
-      clientId : socket.getClientId()
+      clientId : socket.clientId
+      nickname : socket.nickname
       diff     : data.diff
       caretPos : data.caretPos
 
