@@ -44,10 +44,11 @@
   </div>
 </div>
 
-<audio id="crunch0" src="sounds/crunch0.mp3" preload>
-<audio id="crunch1" src="sounds/crunch1.mp3" preload>
-<audio id="crunch2" src="sounds/crunch2.mp3" preload>
-<audio id="crunch3" src="sounds/crunch3.mp3" preload>
+<% if (userAgent.indexOf("Firefox") == -1) { %>
+  <% include audio_mp3 %>
+<% } else { %>
+  <% include audio_ogg %>
+<% } %>
 
 <script>
   var Templates = {
