@@ -15,7 +15,7 @@ class @Nickname
     Common.permStorage.setItem("nickname", nickname)
 
   @random: ->
-    "Anonymous" + Math.random_between(Common.settings.anonymousIdRange[0], Common.settings.anonymousIdRange[1])
+    "Anonymous" + JsHelper.randomBetween(Common.settings.anonymousIdRange[0], Common.settings.anonymousIdRange[1])
 
   @change: ->
     previous = @get()

@@ -1,7 +1,8 @@
 class @SocketListener
 
   constructor: (socket) ->
-    @socket = socket
+    @socket      = socket
+    @soundPlayer = new SoundPlayer()
     @init()
 
   init: ->
@@ -31,8 +32,13 @@ class @SocketListener
       for data in data.clients
         Rooms[roomName].addUser(data)
 
-    @socket.on "distributeTextUpdate", (data) ->
+    @socket.on "distributeTextUpdate", (data) =>
       Rooms[data.roomName].users[data.clientId].distributeText(data)
+      unless document.hasFocus()
+        @soundPlayer.playRandom()
+        Common.titleChanger.startBlinking(data.roomName, data.nickname)
+      unless Rooms[data.roomName].isVisible()
+        Tabs[data.roomName].hitIndicator()
 
     @socket.on "announceNewClient", (data) ->
       Rooms[data.roomName].addUser(data)

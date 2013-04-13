@@ -57,7 +57,7 @@ class @Room
     delete @users[userID]
     @scaleBoxes()
 
-  leave: ->
+  remove: ->
     # need to clean up all the variables?
     @$dom.remove()
     delete Rooms[@name]
@@ -67,3 +67,6 @@ class @Room
 
   tickRoomPrivacyCheckBox: (boolSwitch) ->
     @$roomPrivacyCheckbox.prop("checked",boolSwitch)
+
+  isVisible: ->
+    @$dom.is(":visible")

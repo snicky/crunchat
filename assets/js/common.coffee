@@ -1,9 +1,11 @@
 class @Common
-  @diffCoder   = new DiffCoder()
-  @storage     = new SNStorage()
-  @permStorage = new SNStorage("perm")
+  @diffCoder    = new DiffCoder()
+  @storage      = new SNStorage()
+  @permStorage  = new SNStorage("perm")
+  @titleChanger = new TitleChanger()
 
   @settings =
+    basicTitle            : "Crunchat.com"
     maxStringLength       : 32
     anonymousIdRange      : [10000, 99999]
     roomNameAttr          : "data-room-name"
@@ -11,6 +13,7 @@ class @Common
     textStoragePrefix     : "text:"
 
   @DOM =
+    title                : $("title")
     navSpace             : $("#nav-space")
     mainSpace            : $("#main-space")
     lobbyNavTab          : $("#nav-lobby")
@@ -26,6 +29,7 @@ class @Common
 
   @classes =
     navTab               : "nav-tab"
+    navRoom              : "nav-room"
     roomSpace            : "room-space"
     roomControl          : "room-control"
     closeButton          : "btn-close"

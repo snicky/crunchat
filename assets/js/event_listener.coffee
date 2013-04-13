@@ -1,8 +1,8 @@
 class @EventListener
 
   constructor: (socket) ->
-    @socket = socket
-    @tabs   = []
+    @socket       = socket
+    @tabs         = []
     @bindEvents()
     @catchRoomNameParam()
 
@@ -27,19 +27,10 @@ class @EventListener
     @socket.emit "leaveRoom",
       roomName : roomName
 
-    Rooms[roomName].leave()
+    Rooms[roomName].remove()
     Tabs[roomName].remove()
 
-    @activateLastTab()
-
-  activateLastTab: ->
-    lastTab = $("#nav-space .nav-room:last")
-    if lastTab.length > 0
-      lastRoomName = lastTab.attr(Common.settings.roomNameAttr)
-      Tabs[lastRoomName].activate()
-    else
-      Common.DOM.lobbyNavTab.addClass("active")
-      Lobby.show()
+    NavTab.activateLastTab()
 
   catchRoomNameParam: ->  
     roomNameMatch = window.location.pathname.match(/_\w+/)
@@ -59,6 +50,7 @@ class @EventListener
         target.addClass("active")
         $(".#{Common.classes.roomSpace}").hide()
         Lobby.show()
+        Common.titleChanger.refreshTitle()
         return false
 
     Common.DOM.navSpace.on "click", ".nav-room", ->
@@ -90,13 +82,16 @@ class @EventListener
       Common.spinner.spin(Common.DOM.mainSpinner)
       @socket.emit "joinRandomRoom"
 
-    $("#main-space").on "click", ".#{Common.classes.closeButton}", ->
+    Common.DOM.mainSpace.on "click", ".#{Common.classes.closeButton}", ->
       roomName = $(this).parent().attr(Common.settings.roomNameAttr)
       el.leaveRoom(roomName)
 
-    $("#main-space").on "click", ".#{Common.classes.roomPrivacyCheckbox}", ->
+    Common.DOM.mainSpace.on "click", ".#{Common.classes.roomPrivacyCheckbox}", ->
       $this = $(this)
       roomName = $this.parent().attr(Common.settings.roomNameAttr)
       el.socket.emit "toggleRoomPrivacy", 
         roomName   : roomName
         boolSwitch : $this.prop("checked")
+
+    $(window).focus ->
+      Common.titleChanger.stopBlinking()

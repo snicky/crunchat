@@ -3,10 +3,12 @@
 #= require lib/diff_match_patch
 #= require lib/underscore
 #= require lib/spin
-#= require js_extensions
+#= require server_and_client/js_helper
 #= require jquery_extensions
 #= require diff_coder
 #= require sn_storage
+#= require title_changer
+#= require sound_player
 #= require common
 #= require nav_tab
 #= require lobby
