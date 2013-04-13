@@ -88,7 +88,7 @@ class @EventListener
 
     Common.DOM.mainSpace.on "click", ".#{Common.classes.roomPrivacyCheckbox}", ->
       $this = $(this)
-      roomName = $this.parent().attr(Common.settings.roomNameAttr)
+      roomName = $this.closest(".#{Common.classes.roomControl}").attr(Common.settings.roomNameAttr)
       el.socket.emit "toggleRoomPrivacy", 
         roomName   : roomName
         boolSwitch : $this.prop("checked")
