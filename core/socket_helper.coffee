@@ -39,4 +39,4 @@ module.exports = (io, socket) ->
           roomClients.length >= settings.clientsPerRoom or
           roomClients.indexOf(socket.id) > -1
             rooms.push(roomName)
-    randomRoomName = helper.arraySample(rooms)
+    randomRoomName = JsHelper.arraySample(rooms)
