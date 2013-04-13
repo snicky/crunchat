@@ -1,6 +1,6 @@
 module.exports = (io, socket) ->
 
-  require("../assets/js/server_and_client/js_helper")
+  jsHelper = require("../assets/js/server_and_client/js_helper")
   settings = require("./settings")()
 
   socket.getClientId = ->
@@ -39,4 +39,4 @@ module.exports = (io, socket) ->
           roomClients.length >= settings.clientsPerRoom or
           roomClients.indexOf(socket.id) > -1
             rooms.push(roomName)
-    randomRoomName = JsHelper.arraySample(rooms)
+    randomRoomName = jsHelper.arraySample(rooms)

@@ -1,6 +1,6 @@
-class @JsHelper
-
-  @randomString: (length) ->
+((exports) ->
+  
+  exports.randomString = (length) ->
     text = ""
     possible = "abcdefghijklmnopqrstuvwxyz0123456789"
     
@@ -11,8 +11,10 @@ class @JsHelper
     
     text
 
-  @arraySample: (arr) ->
+  exports.arraySample = (arr) ->
     arr[Math.floor(Math.random() * arr.length)]
 
-  @randomBetween = (min, max) ->
+  exports.randomBetween = (min, max) ->
     Math.floor(Math.random() * (max - min + 1)) + min
+
+) (if typeof exports is "undefined" then this["JsHelper"] = {} else exports)

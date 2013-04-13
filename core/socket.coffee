@@ -1,6 +1,6 @@
 module.exports = (io, socket) ->
 
-  require("../assets/js/server_and_client/js_helper")
+  jsHelper = require("../assets/js/server_and_client/js_helper")
   settings = require("./settings")()
 
   require("./socket_helper")(io, socket)
@@ -41,7 +41,7 @@ module.exports = (io, socket) ->
   socket.on "joinRoom", (data) ->
     roomName = data.roomName if data
     # delete next line?
-    roomName = JsHelper.randomString(settings.idLength) unless roomName
+    roomName = jsHelper.randomString(settings.idLength) unless roomName
     socket.doJoinRoom(roomName)
 
   socket.on "joinRandomRoom", (data) ->
