@@ -105,4 +105,8 @@ class @EventListener
         boolSwitch : $this.prop("checked")
 
     $(window).focus ->
+      Common.document.hasFocus = true
       Common.titleChanger.stopBlinking()
+
+    $(window).blur ->
+      Common.document.hasFocus = false

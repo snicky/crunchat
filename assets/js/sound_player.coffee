@@ -22,7 +22,6 @@ class @SoundPlayer
 
   play: (i) ->
     if @on and !@playing
-      console.log "on and play"
       @playing = true
       @sounds[i].play()
 
