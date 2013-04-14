@@ -34,7 +34,7 @@ class @SocketListener
     @socket.on "distributeTextUpdate", (data) =>
       Rooms[data.roomName].users[data.clientId].distributeText(data)
       # document.hasFocus() always returns true on chromium on Mac
-      unless Common.document.hasFocus
+      unless $.windowHasFocus
         Common.soundPlayer.playRandom()
         Common.titleChanger.startBlinking(data.roomName, data.nickname)
       unless Rooms[data.roomName].isVisible()

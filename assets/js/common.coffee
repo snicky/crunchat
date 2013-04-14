@@ -15,10 +15,6 @@ class @Common
   @soundPlayer  = new SoundPlayer(@settings.soundCookieKey)
   @titleChanger = new TitleChanger()
 
-  # for holding document.hasFocus value, since the original one
-  # always returns true on Mac chromium
-  @document = {}
-
   @DOM =
     title                 : $("title")
     navSpace              : $("#nav-space")
