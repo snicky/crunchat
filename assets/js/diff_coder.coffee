@@ -25,3 +25,11 @@ class @DiffCoder
         n += item[1]
 
     return n
+
+  find: (type, diff) ->
+    if type == "YT"
+      ytRegexp = /.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/
+      for diffEl in diff
+        if diffEl[0] == 1 && typeof diffEl[1] is "string"
+          match = diffEl[1].match(ytRegexp)
+          return match[1] if match

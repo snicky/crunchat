@@ -39,9 +39,73 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <style>
+    .flex-video {
+      position: relative;
+      padding-top: 25px;
+      padding-bottom: 67.5%;
+      height: 0;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+     
+    .flex-video.widescreen { padding-bottom: 57.25%; }
+    .flex-video.vimeo { padding-top: 0; }
+     
+    .flex-video iframe,
+    .flex-video object,
+    .flex-video embed {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    @media only screen and (max-device-width: 800px), only screen and (device-width: 1024px) and (device-height: 600px), only screen and (width: 1280px) and (orientation: landscape), only screen and (device-width: 800px), only screen and (max-width: 767px) {
+      .flex-video { padding-top: 0; }
+    }
+  </style>
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>   
+
+  <div class="row">
+    <div class="span12">
+
+      <div class="row-fluid">
+
+        <div class="span10 offset1">
+          <div class="first-half">
+            <div id="ytapiplayer">
+              You need Flash player 8+ and JavaScript enabled to view this video.
+            </div>
+          </div>
+          <div class="second-half">
+            <div id="ytapiplayer2">
+              You need Flash player 8+ and JavaScript enabled to view this video.
+            </div>
+          </div>
+        </div>
+
+        <script type="text/javascript">
+
+          var params = { allowScriptAccess: "always" };
+          var atts = { id: "myytplayer" };
+          swfobject.embedSWF("http://www.youtube.com/v/Ygz1VRzc8Ls?enablejsapi=1&playerapiid=ytplayer&version=3",
+                             "ytapiplayer", "425", "356", "8", null, null, params, atts);
+          var atts = { id: "myytplayer2" };
+          swfobject.embedSWF("http://www.youtube.com/v/Ygz1VRzc8Ls?enablejsapi=1&playerapiid=ytplayer&version=3",
+                             "ytapiplayer2", "425", "356", "8", null, null, params, atts);
+        </script>
+
+      </div>
 
     </div>
   </div>
+
+
 </div>
 
 <% if (userAgent.indexOf("Firefox") == -1) { %>

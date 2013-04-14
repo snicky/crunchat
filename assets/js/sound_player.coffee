@@ -11,7 +11,6 @@ class @SoundPlayer
         @playing = false
 
   play: (i) ->
-    console.log i
     unless @playing
       @playing = true
       @sounds[i].play()

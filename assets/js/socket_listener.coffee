@@ -39,6 +39,9 @@ class @SocketListener
         Common.titleChanger.startBlinking(data.roomName, data.nickname)
       unless Rooms[data.roomName].isVisible()
         Tabs[data.roomName].hitIndicator()
+      ytLink = Common.diffCoder.find("YT", data.diff)
+      if ytLink
+        console.log(ytLink)
 
     @socket.on "announceNewClient", (data) ->
       Rooms[data.roomName].addUser(data)

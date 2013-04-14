@@ -2,6 +2,7 @@
 #= require lib/bootstrap
 #= require lib/diff_match_patch
 #= require lib/underscore
+#= require lib/jquery_fitvids
 #= require lib/spin
 #= require server_and_client/js_helper
 #= require jquery_extensions
