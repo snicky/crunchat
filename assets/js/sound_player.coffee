@@ -1,18 +1,28 @@
 class @SoundPlayer
 
-  constructor: ->
-    @playing      = false
-    @soundsAmount = 4
-    @sounds       = for i in [0..@soundsAmount-1]
-                      document.getElementById("crunch#{i}")
+  constructor: (switchCookieKey) ->
+    @switchCookieKey = switchCookieKey
+    @on              = @getSwitchFromCookie()
+    @playing         = false
+    @soundsAmount    = 4
+    @sounds          = for i in [0..@soundsAmount-1]
+                         document.getElementById("crunch#{i}")
 
     for sound in @sounds
       sound.addEventListener "ended", =>
         @playing = false
 
+  getSwitchFromCookie: ->
+    switchCookie = $.cookie(@switchCookieKey)
+    if switchCookie then JSON.parse(switchCookie) else true
+
+  toggle: ->
+    @on = !@getSwitchFromCookie()
+    $.cookie(@switchCookieKey, @on)
+
   play: (i) ->
-    console.log i
-    unless @playing
+    if @on and !@playing
+      console.log "on and play"
       @playing = true
       @sounds[i].play()
 
