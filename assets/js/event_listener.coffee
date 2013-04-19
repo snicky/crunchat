@@ -106,3 +106,9 @@ class @EventListener
 
     $(window).focus ->
       Common.titleChanger.stopBlinking()
+
+    $(document).keydown (e) ->
+      keyCode = e.keyCode || e.which
+      if keyCode == 9
+        e.preventDefault()
+        NavTab.activateNextOrLobby()

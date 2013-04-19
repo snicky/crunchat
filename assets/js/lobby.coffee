@@ -18,3 +18,10 @@ class @Lobby
 
   @showJoinForm = ->
     Common.DOM.joinForm.show()
+
+  @activate: ->
+    NavTab.clearAll()
+    Common.DOM.lobbyNavTab.addClass("active")
+    @show()
+    history.pushState(null, null, "/")
+    Common.titleChanger.refreshTitle()
