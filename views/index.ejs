@@ -1,34 +1,42 @@
 <div class="container">
   <div class="row">
-    <div class="span12 align-center">
+    <div class="span12 align-center relative">
+
+      <div class="right-panel">
+        <div class="input-append half-margin-top no-margin-bottom">
+          <input class="low-input span2" id="nickname" type="text">
+          <button id="nickname-change-btn" class="btn btn-mini" type="button">
+            <i class="icon-user"></i> Change
+          </button>
+        </div>
+        <button id="sound-switch-btn" class="btn btn-mini half-margin-top" type="button">
+          <% if (!soundSwitchCookie || JSON.parse(soundSwitchCookie)) { %>
+            <i class="icon-volume-up"></i>
+          <% } else { %>
+            <i class="icon-volume-off"></i>
+          <% } %>
+        </button>
+      </div>
 
       <ul id="nav-space" class="nav nav-tabs">
         <li id="nav-lobby" class="nav-tab active">
           <a href="#"><i id="add-room-icon" class="icon-plus"></i></a>
         </li>
-        <li class="float-right">
-          <div class="input-append half-margin-top no-margin-bottom">
-            <input class="low-input span2" id="nickname" type="text">
-            <button id="nickname-change-btn" class="btn btn-mini" type="button">
-              <i class="icon-user"></i> Change
-            </button>
-          </div>
-        </li>
       </ul>
 
-      <div class="main-container" style="position: relative">
+      <div class="main-container relative">
         <div class="row-fluid">
           <div class="span10 offset1">
             <div id="main-space">
               <div id="lobby">
                 <div id="join-form" class="hide">
-                  <div class="input-append no-margin-bottom">
+                  <div class="input-append no-margin-bottom half-margin-top">
                     <input id="room-name" class="input-large" type="text" placeholder="Choose a room name">
                     <button id="join-button" class="btn btn-primary">
                       <i class="icon-signin"></i> Join
                     </button>
                   </div>
-                  <button id="random-button" class="btn btn-success">
+                  <button id="random-button" class="btn btn-success half-margin-top">
                     <i class="icon-random"></i> Random
                   </button>
                 </div>
@@ -108,10 +116,10 @@
 
 </div>
 
-<% if (userAgent.indexOf("Firefox") == -1) { %>
-  <% include audio_mp3 %>
-<% } else { %>
+<% if (userAgent.indexOf("Firefox") > -1) { %>
   <% include audio_ogg %>
+<% } else { %>
+  <% include audio_mp3 %>
 <% } %>
 
 <script>

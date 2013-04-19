@@ -2,7 +2,6 @@ class @SocketListener
 
   constructor: (socket) ->
     @socket      = socket
-    @soundPlayer = new SoundPlayer()
     @init()
 
   init: ->
@@ -34,8 +33,9 @@ class @SocketListener
 
     @socket.on "distributeTextUpdate", (data) =>
       Rooms[data.roomName].users[data.clientId].distributeText(data)
-      unless document.hasFocus()
-        @soundPlayer.playRandom()
+      # document.hasFocus() always returns true on chromium on Mac
+      unless $.windowHasFocus
+        Common.soundPlayer.playRandom()
         Common.titleChanger.startBlinking(data.roomName, data.nickname)
       unless Rooms[data.roomName].isVisible()
         Tabs[data.roomName].hitIndicator()

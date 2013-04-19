@@ -20,10 +20,11 @@ class @Nickname
   @change: ->
     previous = @get()
     nickname = Common.DOM.nicknameInput.val()
-    if nickname != previous && nickname.length <= Common.settings.maxStringLength
-      nickname = @randomNickname() unless nickname
-      @set(nickname)
-      $(".my").find(".personal-info:first").text("#{nickname}:")
-      nickname
+    if nickname.length > 0 &&
+      nickname != previous &&
+      nickname.length <= Common.settings.maxStringLength
+        @set(nickname)
+        $(".#{Common.classes.myBox}").find(".personal-info:first").text("#{nickname}:")
+        nickname
     else
       false

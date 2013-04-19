@@ -1,4 +1,5 @@
 #= require lib/jquery
+#= require lib/jquery_cookie
 #= require lib/bootstrap
 #= require lib/diff_match_patch
 #= require lib/underscore

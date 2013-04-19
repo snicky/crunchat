@@ -3,12 +3,16 @@
 
 standard-margin = 15px
 half-margin     = standard-margin/2
+double-margin   = standard-margin*2
 
 body
   margin-top 20px
 
 .display-inline
 	display inline
+
+.relative
+	position relative
 
 .small-font
 	font-size 10.5px
@@ -36,6 +40,11 @@ body
 
 .standard-margin-top
 	margin-top standard-margin
+
+.right-panel
+	position absolute
+	top 0
+	right 0
 
 .main-container
 	border 1px solid #ddd
@@ -82,9 +91,11 @@ input.low-input
 		height 22px
 		min-height 22px
 		line-height normal
+	#nav-space
+		padding-top 40px 
 
 .half-margin-top
-	padding-top half-margin
+	margin-top half-margin
 
 .room-control
 	@extend .small-font

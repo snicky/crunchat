@@ -1,9 +1,5 @@
 class @Common
-  @diffCoder    = new DiffCoder()
-  @storage      = new SNStorage()
-  @permStorage  = new SNStorage("perm")
-  @titleChanger = new TitleChanger()
-
+    
   @settings =
     basicTitle            : "Crunchat.com"
     maxStringLength       : 32
@@ -11,21 +7,31 @@ class @Common
     roomNameAttr          : "data-room-name"
     roomIdPrefix          : "room-"
     textStoragePrefix     : "text:"
+    soundCookieKey        : "sound"
+
+  @diffCoder    = new DiffCoder()
+  @storage      = new SNStorage()
+  @permStorage  = new SNStorage("perm")
+  @soundPlayer  = new SoundPlayer(@settings.soundCookieKey)
+  @titleChanger = new TitleChanger()
 
   @DOM =
-    title                : $("title")
-    navSpace             : $("#nav-space")
-    mainSpace            : $("#main-space")
-    lobbyNavTab          : $("#nav-lobby")
-    lobby                : $("#lobby")
-    lobbyInfo            : $("#lobby-info")
-    mainSpinner          : document.getElementById("main-spinner")
-    roomNameInput        : $("#room-name")
-    joinForm             : $("#join-form")
-    joinButton           : $("#join-button")
-    randomButton         : $("#random-button")
-    nicknameChangeButton : $("#nickname-change-btn")
-    nicknameInput        : $("#nickname")
+    title                 : $("title")
+    navSpace              : $("#nav-space")
+    mainSpace             : $("#main-space")
+    lobbyNavTab           : $("#nav-lobby")
+    nicknameChangeButton  : $("#nickname-change-btn")
+    nicknameInput         : $("#nickname")
+    soundSwitchButton     : $("#sound-switch-btn")
+    lobby                 : $("#lobby")
+    lobbyInfo             : $("#lobby-info")
+    mainSpinner           : document.getElementById("main-spinner")
+    roomNameInput         : $("#room-name")
+    joinForm              : $("#join-form")
+    joinButton            : $("#join-button")
+    randomButton          : $("#random-button")
+
+  @DOM.soundSwitchButtonIcon = @DOM.soundSwitchButton.find("i")
 
   @classes =
     navTab               : "nav-tab"

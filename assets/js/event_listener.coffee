@@ -69,6 +69,17 @@ class @EventListener
         @socket.emit "updateNickname",
           nickname: newNickname
 
+    Common.DOM.soundSwitchButton.on "click", ->
+      if Common.soundPlayer.on
+        Common.DOM.soundSwitchButtonIcon
+          .addClass("icon-volume-off")
+          .removeClass("icon-volume-up")
+      else
+        Common.DOM.soundSwitchButtonIcon
+          .addClass("icon-volume-up")
+          .removeClass("icon-volume-off")
+      Common.soundPlayer.toggle()
+
     Common.DOM.roomNameInput.keypress (e) ->
       if e.which == 13
         Common.DOM.joinButton.click()
@@ -95,3 +106,9 @@ class @EventListener
 
     $(window).focus ->
       Common.titleChanger.stopBlinking()
+
+    $(document).keydown (e) ->
+      keyCode = e.keyCode || e.which
+      if keyCode == 9
+        e.preventDefault()
+        NavTab.activateNextOrLobby()
