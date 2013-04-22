@@ -30,6 +30,8 @@ class @Common
     joinForm              : $("#join-form")
     joinButton            : $("#join-button")
     randomButton          : $("#random-button")
+    ytContainer           : $("#yt-container")
+    ytSpace               : $("#yt-space")
 
   @DOM.soundSwitchButtonIcon = @DOM.soundSwitchButton.find("i")
 
@@ -46,6 +48,7 @@ class @Common
     firstHalfBox         : "first-half"
     secondHalfBox        : "second-half"
     userSpace            : "user-space"
+    ytBox                : "yt-box"
 
   @spinnerOpts =
     lines:      11        # The number of lines to draw

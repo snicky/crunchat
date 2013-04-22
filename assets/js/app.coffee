@@ -3,6 +3,7 @@
 #= require lib/bootstrap
 #= require lib/diff_match_patch
 #= require lib/underscore
+#= require lib/swfobject
 #= require lib/jquery_fitvids
 #= require lib/spin
 #= require server_and_client/js_helper
@@ -11,6 +12,7 @@
 #= require sn_storage
 #= require title_changer
 #= require sound_player
+#= require yt_movie
 #= require common
 #= require nav_tab
 #= require lobby

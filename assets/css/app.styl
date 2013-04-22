@@ -1,12 +1,12 @@
 @import "lib/bootstrap.css"
 @import "lib/font-awesome.css"
 
-standard-margin = 15px
+standard-margin = 20px
 half-margin     = standard-margin/2
 double-margin   = standard-margin*2
 
 body
-  margin-top 20px
+  margin 20px 0
 
 .display-inline
 	display inline
@@ -38,6 +38,9 @@ body
 .no-margin, input.no-margin
 	margin 0
 
+.standard-padding
+	padding standard-margin
+
 .standard-margin-top
 	margin-top standard-margin
 
@@ -46,11 +49,14 @@ body
 	top 0
 	right 0
 
-.main-container
+.border1
 	border 1px solid #ddd
+
+.main-container
+	@extend .standard-padding
+	@extend .border1
 	border-top 0
 	margin-top -20px
-	padding 20px
 	min-height 400px
 	// box-shadow 1px 1px 3px #777
 
@@ -65,6 +71,20 @@ body
 
 .second-half
 	@extend .float-right
+
+object
+	width: 100%
+
+.yt-box
+	width 50%
+
+.yt-box:nth-child(2n+1)
+	@extend .float-left
+	margin-left -(half-margin)
+
+.yt-box:nth-child(2n)
+	@extend .float-right
+	margin-right -(half-margin)
 
 .room-space
 	margin-left -12px

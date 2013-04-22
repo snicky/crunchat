@@ -2,6 +2,7 @@ initialize = ->
   socket         = io.connect(window.location.origin)
   window.Rooms   = {}
   window.Tabs    = {}
+  window.Movies  = {}
   titleChanger   = new TitleChanger()
   eventListener  = new EventListener(socket, titleChanger)
   socketListener = new SocketListener(socket, titleChanger)

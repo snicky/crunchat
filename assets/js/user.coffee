@@ -23,10 +23,15 @@ class @User
   getDomID: ->
     @roomName + "-" + @userID
 
+  parseYoutubeLink: (diff) ->
+    youtubeID = Common.diffCoder.find("YT", diff)
+    new YTMovie(youtubeID) if youtubeID
+
   distributeText: (data) ->
     newText = Common.diffCoder.decode(@$textarea.text(), data.diff)
     @$textarea.text(newText)
     @$textarea.scrollToCaret(data.caretPos) unless @$textarea.is(":focus")
+    @parseYoutubeLink(data.diff)
 
   # distribute other users's nickname!
   changeNickname: (nickname) ->
@@ -42,6 +47,7 @@ class @User
         Common.storage.setItem(@textStorageKey, currentText)
         caretPos = @$textarea[0].selectionStart
         callback(diff, caretPos)
+        @parseYoutubeLink(diff)
 
   focusOnTextarea: ->
     @$textarea.focus()
