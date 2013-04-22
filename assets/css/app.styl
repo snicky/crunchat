@@ -72,6 +72,9 @@ body
 .second-half
 	@extend .float-right
 
+textarea
+	height 200px
+
 object
 	width: 100%
 
@@ -111,8 +114,26 @@ input.low-input
 		height 22px
 		min-height 22px
 		line-height normal
+	
 	#nav-space
 		padding-top 40px 
+
+	.first-half, .second-half
+		float none
+		width 100%
+
+	textarea
+		height 125px
+
+	.yt-box
+		float none
+		width 100%
+
+	.yt-box:nth-child(2n+1)
+		margin-left 0
+
+	.yt-box:nth-child(2n)
+		margin-right 0
 
 .half-margin-top
 	margin-top half-margin
