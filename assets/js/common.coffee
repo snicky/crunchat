@@ -30,8 +30,6 @@ class @Common
     joinForm              : $("#join-form")
     joinButton            : $("#join-button")
     randomButton          : $("#random-button")
-    ytContainer           : $("#yt-container")
-    ytSpace               : $("#yt-space")
 
   @DOM.soundSwitchButtonIcon = @DOM.soundSwitchButton.find("i")
 

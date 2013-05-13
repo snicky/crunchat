@@ -1,10 +1,9 @@
 class @User
 
   constructor: (attrs) ->
-    @roomName       = attrs.roomName
-    @userID         = attrs.userID
-    @nickname       = attrs.nickname
-    @textStorageKey = Common.settings.textStoragePrefix + @roomName if @userID == "me"
+    @roomName = attrs.roomName
+    @userID   = attrs.userID
+    @nickname = attrs.nickname
     @putInDom()
 
   putInDom: ->
@@ -23,31 +22,15 @@ class @User
   getDomID: ->
     @roomName + "-" + @userID
 
-  parseYoutubeLink: (diff) ->
-    youtubeID = Common.diffCoder.find("YT", diff)
-    new YTMovie(youtubeID) if youtubeID
-
   distributeText: (data) ->
     newText = Common.diffCoder.decode(@$textarea.text(), data.diff)
     @$textarea.text(newText)
     @$textarea.scrollToCaret(data.caretPos) unless @$textarea.is(":focus")
-    @parseYoutubeLink(data.diff)
+    Rooms[data.roomName].addYoutubeMovie(data.diff)
 
   # distribute other users's nickname!
   changeNickname: (nickname) ->
     @$personalInfo.text("#{nickname}:")
-
-  activateMyTextarea: (callback) ->
-    Common.storage.setItem(@textStorageKey, @$textarea.val())
-    @$textarea.on "keyup", =>
-      currentText = @$textarea.val()
-      storedText  = Common.storage.getItem(@textStorageKey)
-      unless currentText is storedText
-        diff = Common.diffCoder.encode(storedText, currentText)
-        Common.storage.setItem(@textStorageKey, currentText)
-        caretPos = @$textarea[0].selectionStart
-        callback(diff, caretPos)
-        @parseYoutubeLink(diff)
 
   focusOnTextarea: ->
     @$textarea.focus()

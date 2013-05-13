@@ -22,7 +22,7 @@ class @SocketListener
       # joinForm is hidden after clicking "Join/Random"
       Lobby.showJoinForm()
 
-      Rooms[roomName].users.me.activateMyTextarea (diff, caretPos) =>
+      Rooms[roomName].activateMyTextarea (diff, caretPos) =>
         @socket.emit "textUpdate",
           roomName : roomName
           diff     : diff

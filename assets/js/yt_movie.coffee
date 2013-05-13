@@ -1,6 +1,6 @@
 class @YTMovie
 
-  constructor: (id) ->
+  constructor: (id, room) ->
 
     if Movies[id]
       false
@@ -8,20 +8,17 @@ class @YTMovie
     else
       ($.get "https://gdata.youtube.com/feeds/api/videos/#{id}?v=2", ->
         
-        @id = id
+        @id   = id
+        @room = room
         @params =
           allowScriptAccess: "always"
 
-        $dom = $(Templates.YTMovie)
-        $dom.find("div").attr("id",@id)
-
-        if Common.DOM.ytContainer.hasClass("hidden")
-          Common.DOM.ytContainer.removeClass("hidden")
-
-        Common.DOM.ytSpace.prepend($dom)
+        @room.addYTBox(@id)
 
         swfobject.embedSWF("http://www.youtube.com/v/#{@id}?enablejsapi=1&playerapiid=ytplayer&version=3",
         @id, "425", "356", "8", null, null, @params, { id: @id })
+
+        @room.hasYT = true
 
         @$dom = $("##{@id}")
 
