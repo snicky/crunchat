@@ -21,7 +21,7 @@ class @YTMovie
         Common.DOM.ytSpace.prepend($dom)
 
         swfobject.embedSWF("http://www.youtube.com/v/#{@id}?enablejsapi=1&playerapiid=ytplayer&version=3",
-        @id, "425", "356", "8", null, null, @params, { id: @id })
+        @id, "238", "200", "8", null, null, @params, { id: @id })
 
         @$dom = $("##{@id}")
 
