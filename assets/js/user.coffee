@@ -26,7 +26,7 @@ class @User
     newText = Common.diffCoder.decode(@$textarea.text(), data.diff)
     @$textarea.text(newText)
     @$textarea.scrollToCaret(data.caretPos) unless @$textarea.is(":focus")
-    Rooms[data.roomName].addYoutubeMovie(data.diff)
+    # Rooms[data.roomName].addYoutubeMovie(data.diff)
 
   # distribute other users's nickname!
   changeNickname: (nickname) ->

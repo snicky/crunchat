@@ -44,11 +44,11 @@ class @Room
         Common.storage.setItem(@myTextStorageKey, currentText)
         caretPos = $textarea[0].selectionStart
         callback(diff, caretPos)
-        @addYoutubeMovie(diff)
+        # @addYoutubeMovie(diff)
 
   addYoutubeMovie: (diff) ->
     youtubeID = Common.diffCoder.find("YT", diff)
-    new YTMovie(youtubeID, @name) if youtubeID
+    new YTMovie(youtubeID, @) if youtubeID
 
   scaleBoxes: ->
     boxes = @$dom.find(".#{Common.classes.userSpace}")
