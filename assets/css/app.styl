@@ -88,11 +88,11 @@ object
 
 .yt-box:nth-child(2n+1)
   @extend .float-left
-  margin-left half-margin
+  margin-left -(half-margin)
 
 .yt-box:nth-child(2n)
   @extend .float-right
-  margin-right half-margin
+  margin-right -(half-margin)
 
 .room-space textarea
   @extend .full
